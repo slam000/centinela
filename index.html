@@ -233,6 +233,205 @@
   @media (prefers-reduced-motion: reduce) {
     .dot.hot, .led.r, .led.c, .cursor { animation: none; }
   }
+
+  /* ---------- Íconos animados de los modos: copia de src/components/ModeIcon.css ---------- */
+.fc-mode-icon {
+  flex: none;
+  width: 58px;
+  height: 58px;
+  color: var(--screen-accent);
+  filter: drop-shadow(0 0 3px currentColor);
+}
+
+/* MONITOR: nave viajando (comparte .fc-icon-ship con RATEO) */
+.fc-icon-star {
+  animation: fc-icon-star 1.2s linear infinite;
+}
+
+.fc-icon-star--fast {
+  animation-duration: 0.8s;
+  animation-delay: -0.4s;
+}
+
+.fc-icon-star--slow {
+  animation-duration: 1.8s;
+  animation-delay: -1s;
+}
+
+.fc-icon-star:nth-child(5) {
+  animation-delay: -0.6s;
+}
+
+.fc-icon-flame {
+  transform-origin: 14px 24px;
+  animation: fc-icon-flame 0.18s ease-in-out infinite alternate;
+}
+
+@keyframes fc-icon-star {
+  from { transform: translateX(0); }
+  to { transform: translateX(-58px); }
+}
+
+@keyframes fc-icon-flame {
+  from { transform: scaleX(1); opacity: 1; }
+  to { transform: scaleX(0.55); opacity: 0.6; }
+}
+
+/* WH NAV: agujero de gusano */
+.fc-icon-swirl {
+  transform-origin: 24px 24px;
+  animation: fc-icon-spin 8s linear infinite;
+}
+
+.fc-icon-swirl-core {
+  transform-origin: 24px 24px;
+  animation: fc-icon-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes fc-icon-spin {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes fc-icon-pulse {
+  0%, 100% { transform: scale(0.7); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* RATEO: nave disparando */
+.fc-icon-ship {
+  animation: fc-icon-bob 3s ease-in-out infinite;
+}
+
+.fc-icon-thrust {
+  animation: fc-icon-flicker 0.15s steps(2) infinite;
+}
+
+.fc-icon-bolt {
+  opacity: 0;
+  animation: fc-icon-bolt 1.2s linear infinite;
+}
+
+.fc-icon-bolt--2 {
+  animation-delay: 0.3s;
+}
+
+.fc-icon-rat {
+  animation: fc-icon-recoil 1.2s infinite;
+}
+
+.fc-icon-rat {
+  transform-origin: 41px 24px;
+}
+
+.fc-icon-hit {
+  opacity: 0;
+  transform-origin: 35px 24px;
+  animation: fc-icon-hit 1.2s infinite;
+}
+
+@keyframes fc-icon-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.5px); }
+}
+
+@keyframes fc-icon-flicker {
+  50% { opacity: 0.2; }
+}
+
+@keyframes fc-icon-bolt {
+  0% { opacity: 1; transform: translateX(0); }
+  30% { opacity: 1; transform: translateX(3px); }
+  31%, 100% { opacity: 0; transform: translateX(3px); }
+}
+
+@keyframes fc-icon-recoil {
+  0%, 30% { transform: translateX(0); }
+  36% { transform: translateX(1.5px); }
+  50%, 100% { transform: translateX(0); }
+}
+
+@keyframes fc-icon-hit {
+  0%, 28% { opacity: 0; transform: scale(0.3); }
+  32% { opacity: 1; transform: scale(1); }
+  50%, 100% { opacity: 0; transform: scale(1.6); }
+}
+
+/* OFF (perilla de modo): planeta con anillo; la luna se anima con SMIL
+   (animateMotion) en el propio SVG, acá solo las estrellas. */
+.fc-icon-twinkle {
+  animation: fc-icon-twinkle 3s ease-in-out infinite;
+}
+
+.fc-icon-twinkle--2 {
+  animation-delay: -1s;
+}
+
+.fc-icon-twinkle--3 {
+  animation-delay: -2s;
+}
+
+@keyframes fc-icon-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Compu apagada: ⏻ que respira. Rojo fijo de standby (no sigue la skin, igual
+   que la retroiluminación de la perilla de encendido con la compu apagada). */
+.fc-mode-icon--standby {
+  color: #ff4d4d;
+  animation: fc-icon-breathe 4s ease-in-out infinite;
+}
+
+@keyframes fc-icon-breathe {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.75; }
+}
+
+/* RADIO: antena */
+.fc-icon-wave {
+  opacity: 0;
+  animation: fc-icon-wave 2s ease-out infinite;
+}
+
+.fc-icon-wave--2 {
+  animation-delay: 0.4s;
+}
+
+.fc-icon-wave--3 {
+  animation-delay: 0.8s;
+}
+
+@keyframes fc-icon-wave {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-mode-icon * {
+    animation: none !important;
+  }
+
+  .fc-icon-bolt,
+  .fc-icon-hit,
+  .fc-icon-wave {
+    opacity: 1;
+  }
+}
+
+  .rows .fc-mode-icon { width: 40px; height: 40px; }
+  .mode-cell { flex: 0 0 11rem; display: flex; align-items: center; gap: 12px; }
+  .mode-cell .label { color: var(--screen-accent); }
+  .rows .row.mode-row { align-items: center; }
+  .demo .header .fc-mode-icon { width: 46px; height: 46px; }
+  .demo .header { align-items: center; }
+  .head-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .hero-top { display: flex; align-items: center; gap: clamp(14px, 3vw, 24px); }
+  .app-icon { flex: none; width: clamp(72px, 14vw, 112px); height: auto; filter: drop-shadow(0 0 10px rgba(127, 216, 208, 0.35)); }
+  .lock { flex-direction: row; align-items: center; gap: 14px; }
+  .lock .fc-mode-icon { width: 40px; height: 40px; }
+  .lock-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  @media (max-width: 600px) { .mode-cell { flex-basis: 100%; } }
 </style>
 
 </head>
@@ -241,15 +440,82 @@
   <div class="bezel">
     <div class="bezel-label">CENTINELA — sistema de monitorización de VANGUARDIA DR</div>
     <div class="screen hero-screen">
+      <div class="hero-top">
+<svg class="app-icon" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ícono de Centinela" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="scope" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0f2a2a"/>
+      <stop offset="100%" stop-color="#050809"/>
+    </radialGradient>
+    <linearGradient id="bezel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3f46"/>
+      <stop offset="100%" stop-color="#15181b"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="256" y1="256" x2="256" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7fd8d0" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#7fd8d0" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef3f4"/>
+      <stop offset="100%" stop-color="#9fb3b6"/>
+    </linearGradient>
+  </defs>
+
+  
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="url(#bezel)"/>
+  <rect x="28" y="28" width="456" height="456" rx="86" fill="#0b0d10"/>
+
+  
+  <circle cx="256" cy="256" r="200" fill="url(#scope)" stroke="#7fd8d0" stroke-width="6"/>
+  <g fill="none" stroke="#7fd8d0" stroke-opacity="0.45" stroke-width="3">
+    <circle cx="256" cy="256" r="134"/>
+    <circle cx="256" cy="256" r="68"/>
+    <line x1="56" y1="256" x2="456" y2="256"/>
+    <line x1="256" y1="56" x2="256" y2="456"/>
+  </g>
+
+  
+  <path d="M256 256 L256 56 A200 200 0 0 1 397.4 114.6 Z" fill="url(#sweep)" transform="rotate(20 256 256)"/>
+  <line x1="256" y1="256" x2="397.4" y2="114.6" stroke="#bff3ee" stroke-width="5" stroke-linecap="round" transform="rotate(20 256 256)"/>
+
+  
+  <circle cx="352" cy="132" r="13" fill="#ff4a3d"/>
+  <circle cx="352" cy="132" r="24" fill="none" stroke="#ff4a3d" stroke-width="4" stroke-opacity="0.6"/>
+  <circle cx="150" cy="346" r="9" fill="#7fd8d0"/>
+  <circle cx="378" cy="330" r="8" fill="#f2b33d"/>
+
+  
+  <g transform="translate(256 262)">
+    
+    <path d="M-30 -20 L-52 -6 L-56 52 L-40 64 L-30 40 Z" fill="url(#hull)" stroke="#0b0d10" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M30 -20 L52 -6 L56 52 L40 64 L30 40 Z" fill="url(#hull)" stroke="#0b0d10" stroke-width="5" stroke-linejoin="round"/>
+    
+    <path d="M-10 -104 L-4 -62 L4 -62 L10 -104 L22 -60 L30 -10 L26 56 L14 74 L-14 74 L-26 56 L-30 -10 L-22 -60 Z"
+          fill="url(#hull)" stroke="#0b0d10" stroke-width="5" stroke-linejoin="round"/>
+    
+    <path d="M0 -44 L9 -14 L0 -2 L-9 -14 Z" fill="#7fd8d0"/>
+    <line x1="-14" y1="12" x2="14" y2="12" stroke="#5d7275" stroke-width="4"/>
+    <line x1="-16" y1="30" x2="16" y2="30" stroke="#5d7275" stroke-width="4"/>
+    
+    <rect x="-13" y="72" width="10" height="16" rx="3" fill="#7fd8d0"/>
+    <rect x="3" y="72" width="10" height="16" rx="3" fill="#7fd8d0"/>
+    <rect x="-52" y="56" width="10" height="13" rx="3" fill="#7fd8d0"/>
+    <rect x="42" y="56" width="10" height="13" rx="3" fill="#7fd8d0"/>
+  </g>
+</svg>
       <h1>CENTINELA</h1>
+      </div>
       <p>La computadora de a bordo de la corp. Va en una segunda pantalla mientras jugás y te avisa cuando hay hostiles cerca: lee tus canales de intel, sigue los kills en vivo de tu perímetro y sabe en qué sistema estás apenas saltás.</p>
       <div class="hero-actions">
         <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.3.0</small></a>
         <span class="corp-note">Solo para pilotos de Vanguardia DR<span class="cursor" aria-hidden="true"></span></span>
       </div>
       <div class="lock">
+        <svg class="fc-mode-icon fc-mode-icon--standby" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 15 a12 12 0 1 0 16 0"/><line x1="24" y1="9" x2="24" y2="23"/></svg>
+        <div class="lock-text">
         <span class="label">ACCESO RESTRINGIDO</span>
         <p>Centinela está bloqueada para quien no pertenece a la corp. Al iniciar sesión con EVE comprueba la corporación de tu personaje: si no es Vanguardia DR, la perilla de modo no gira y la pantalla se queda en DISPLAY OFF, sin acceso a ningún modo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -259,8 +525,11 @@
     <div class="screen demo">
       <div class="tabs"><span class="tab">OFF</span><span class="tab">MONITOR</span><span class="tab">WH NAV</span><span class="tab on">RATEO</span><span class="tab">RADIO</span></div>
       <div class="header">
-        <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
-        <span class="danger">AQUÍ · ⚠ 1 kill(s) 1h</span>
+        <div class="head-text">
+          <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
+          <span class="danger">AQUÍ · ⚠ 1 kill(s) 1h</span>
+        </div>
+        <svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg>
       </div>
       <div>
         <div class="label section-label">AMENAZAS</div>
@@ -287,10 +556,11 @@
     <div class="screen">
       <p>Se cambia de modo girando la perilla, como en un panel físico. Antes hay que iniciar sesión con EVE desde ⚙.</p>
       <div class="rows">
-        <div class="row"><span class="label">MONITOR</span><p>El sistema en el que estás, su seguridad, tu nave y las puertas a los vecinos, con los kills de la última hora en cada uno.</p></div>
-        <div class="row"><span class="label">WH NAV</span><p>Al entrar en un wormhole: clase, fenómeno y sus efectos, la static (destino, duración y masa) y los wandering que pueden aparecer. Funciona sin internet, con datos de CCP.</p></div>
-        <div class="row"><span class="label">RATEO</span><p>El perímetro de hasta 4 saltos alrededor tuyo. Vigila tus canales de intel y los kills en vivo, muestra quién reportó y a qué hostiles, y suma las recompensas de la sesión.</p></div>
-        <div class="row"><span class="label">RADIO</span><p>Radios online para acompañar el rateo. Se corta sola al cambiar de modo o apagar.</p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--planet" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="none" fill="currentColor"><circle class="fc-icon-twinkle" cx="6" cy="8" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="42" cy="5" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--3" cx="43" cy="42" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="5" cy="40" r="1"/></g><g transform="rotate(-20 24 24)"><ellipse cx="24" cy="24" rx="21" ry="6" stroke-width="1.6" stroke-opacity="0.55"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/></circle></g><circle cx="24" cy="24" r="13" fill="#05080a"/><circle cx="24" cy="24" r="13" fill="currentColor" fill-opacity="0.15"/><path d="M15 18 a11 11 0 0 0 2 13" stroke-width="1.4" stroke-opacity="0.7"/><g transform="rotate(-20 24 24)"><path d="M3 24 a21 6 0 0 0 42 0" stroke-width="1.6"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/><animate attributeName="opacity" values="1;0" keyTimes="0;0.5" calcMode="discrete" dur="10s" repeatCount="indefinite"/></circle></g></svg><span class="label">OFF</span></span><p>En reposo: la pantalla muestra la hora EVE y te saluda. Es donde arranca la perilla al encender.</p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--monitor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="1.5"><line class="fc-icon-star" x1="48" y1="6" x2="52" y2="6"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="12" x2="54" y2="12"/><line class="fc-icon-star fc-icon-star--slow" x1="48" y1="19" x2="50" y2="19"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="38" x2="54" y2="38"/><line class="fc-icon-star" x1="48" y1="43" x2="52" y2="43"/></g><g class="fc-icon-ship"><path class="fc-icon-flame" d="M14 21 L4 24 L14 27"/><path d="M8 14 L30 21 L40 24 L30 27 L8 34 L14 24 Z" fill="currentColor" fill-opacity="0.25"/></g></svg><span class="label">MONITOR</span></span><p>El sistema en el que estás, su seguridad, tu nave y las puertas a los vecinos, con los kills de la última hora en cada uno.</p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--wh-nav" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-swirl"><path d="M24 24 m0 -4 a4 4 0 1 1 -4 4"/><path d="M24 24 m0 -10 a10 10 0 1 1 -10 10"/><path d="M24 24 m0 -17 a17 17 0 1 1 -17 17"/></g><circle class="fc-icon-swirl-core" cx="24" cy="24" r="2.5" fill="currentColor"/></svg><span class="label">WH NAV</span></span><p>Al entrar en un wormhole: clase, fenómeno y sus efectos, la static (destino, duración y masa) y los wandering que pueden aparecer. Funciona sin internet, con datos de CCP.</p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg><span class="label">RATEO</span></span><p>El perímetro de hasta 4 saltos alrededor tuyo. Vigila tus canales de intel y los kills en vivo, muestra quién reportó y a qué hostiles, y suma las recompensas de la sesión.</p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--radio" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="24" y1="20" x2="24" y2="44"/><line x1="16" y1="44" x2="32" y2="44"/><circle cx="24" cy="18" r="2.5" fill="currentColor"/><path class="fc-icon-wave" d="M18 12 a8 8 0 0 0 0 12 M30 12 a8 8 0 0 1 0 12"/><path class="fc-icon-wave fc-icon-wave--2" d="M13 7 a14 14 0 0 0 0 22 M35 7 a14 14 0 0 1 0 22"/><path class="fc-icon-wave fc-icon-wave--3" d="M8 3 a20 20 0 0 0 0 30 M40 3 a20 20 0 0 1 0 30"/></svg><span class="label">RADIO</span></span><p>Radios online para acompañar el rateo. Se corta sola al cambiar de modo o apagar.</p></div>
       </div>
     </div>
   </div>
