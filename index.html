@@ -506,6 +506,8 @@
   .honor-pilot:hover img { border-color: var(--screen-accent); box-shadow: 0 0 10px -2px var(--screen-accent); }
   .honor-empty span { display: grid; place-items: center; border: 1px dashed var(--screen-fg); color: var(--screen-fg); font-family: var(--font-display); font-size: 1.4em; opacity: 0.5; }
   .honor-note { margin: 14px 0 0; color: var(--text); }
+  /* "¿Serás el primero?" se va solo en cuanto hay un donante (normal o cloaked). */
+  .honor-grid:has(.honor-pilot, .honor-cloaked) + .honor-note .honor-first { display: none; }
   /* Donante de incógnito ("no aparecés ni en el D-Scan"): silueta genérica casi
      transparente con un brillo que la recorre, como el efecto de cloak. */
   .honor-cloaked { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.85em; color: var(--screen-fg); font-style: italic; }
@@ -765,7 +767,7 @@
         <div class="honor-empty" aria-hidden="true"><span>?</span></div>
         <div class="honor-empty" aria-hidden="true"><span>?</span></div>
       </div>
-      <p class="honor-note">Todavía no hay nadie en el panel. ¿Serás el primero? Quien done aparece acá con su retrato, sin montos. ¿Sos más de operar con el cloak puesto? Avisale a SLAMes y no aparecés ni en el D-Scan.</p>
+      <p class="honor-note"><span class="honor-first">Todavía no hay nadie en el panel. ¿Serás el primero? </span>Quien done aparece acá con su retrato, sin montos. ¿Sos más de operar con el cloak puesto? Avisale a SLAMes y no aparecés ni en el D-Scan.</p>
     </div>
   </div>
 
