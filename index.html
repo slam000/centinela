@@ -144,6 +144,9 @@
   .danger { color: var(--kill); }
 
   .faces { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .threat-side { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .info { padding: 0 6px; border: 1px solid currentColor; border-radius: 3px; font-size: 0.85em; }
+  img.face { object-fit: cover; }
   .face { width: 28px; height: 28px; border: 1px solid var(--kill); border-radius: 6px; display: inline-grid; place-items: center; background: #1d1414; color: var(--kill); font-size: 0.8em; text-shadow: none; }
 
   .rings { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
@@ -563,19 +566,19 @@
       <div class="header">
         <div class="head-text">
           <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
-          <span class="danger">AQUÍ · ⚠ 1 kill(s) 1h</span>
+          <span class="danger">AQUÍ · ▲ intel hace 1m · ⚠ 1 kill(s) 1h</span>
         </div>
         <svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg>
       </div>
       <div>
         <div class="label section-label">AMENAZAS</div>
-        <div class="row"><span class="name">AQUÍ 1DQ1-A</span><span class="value danger">1 kill(s) · Sabre 4m · 62M ISK</span></div>
-        <div class="row"><span><span class="name">2j 8WA-Z6</span><br><span class="danger">▲ intel hace 1m · 5 hostiles · por Kaelen Voss</span></span><span class="faces"><span class="face">KV</span><span class="face">+4</span></span></div>
+        <div class="row"><span><span class="name">AQUÍ 1DQ1-A</span><br><span class="danger">▲ intel hace 1m · 2 hostiles · por Kaelen Voss</span></span><span class="threat-side"><span class="value danger">1 kill(s) · Sabre 4m · 62M ISK <span class="info">info</span></span><span class="faces"><img class="face" src="https://images.evetech.net/characters/2117964877/portrait?size=64" alt="SLAMes"><span class="face">+1</span></span></span></div>
+        <div class="row"><span><span class="name">2j 8WA-Z6</span><br><span class="danger">▲ intel hace 2m · 6 hostiles · por Kaelen Voss</span></span><span class="faces"><span class="face">+6</span></span></div>
       </div>
       <div>
         <div class="row"><span class="label">PERÍMETRO</span><span class="value">4j · 15 sistemas</span></div>
         <div class="rings">
-          <div class="ring"><b>AQUÍ</b><div class="dots"><span class="dot act here"></span></div></div>
+          <div class="ring"><b>AQUÍ</b><div class="dots"><span class="dot hot here"></span></div></div>
           <div class="ring"><b>1j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
           <div class="ring"><b>2j</b><div class="dots"><span class="dot hot"></span><span class="dot"></span><span class="dot"></span><span class="dot act"></span><span class="dot"></span></div></div>
           <div class="ring"><b>3j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
