@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Centinela, la computadora de a bordo de Vanguardia DR para EVE Online: intel, kills en vivo y alertas de perímetro.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>Centinela · Vanguardia DR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Share+Tech+Mono&display=swap">
+<style>
+  /* Layout: cada bloque de la página es un monitor de Centinela — marco con
+     el título grabado y cristal con scanlines — copiando los estilos de la
+     app (src/components/FlightComputer.css, src/styles/theme.css). Un solo
+     look oscuro a propósito, igual que la app. */
+  :root {
+    color-scheme: dark;
+    --cabin-bg: #0b0d10;
+    --bezel-bg: #202327;
+    --bezel-edge: #34383e;
+    --engraved: #7d838c;
+    --text: #d8dadd;
+    --screen-fg: #a9b1b7;     /* skin SOE */
+    --screen-accent: #7fd8d0; /* skin SOE */
+    --warn: #e6c250;
+    --danger: #ff5a4a;
+    --critical: #ff3b30;
+    --kill: #e4796a;
+    --sec-null: #8d3163;      /* color oficial CCP para null sec */
+
+    --font-display: 'Audiowide', 'Share Tech Mono', ui-monospace, monospace;
+    --font-mono: 'Share Tech Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cabin-bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-inline: 16px;
+    padding-block: 32px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  a { color: var(--screen-accent); }
+  a:focus-visible { outline: 2px solid var(--screen-accent); outline-offset: 3px; }
+  h1, h2 { margin: 0; font-weight: 400; text-wrap: balance; }
+
+  /* ---------- Marco + cristal (igual que .fc-bezel / .fc-screen) ---------- */
+  .bezel {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 18px);
+    padding: clamp(14px, 2.5vw, 24px);
+    background: var(--bezel-bg);
+    border: 1px solid var(--bezel-edge);
+    border-radius: 20px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .bezel-label {
+    font-family: var(--font-display);
+    font-size: clamp(11px, 1.6vw, 14px);
+    letter-spacing: 0.08em;
+    color: var(--engraved);
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .screen {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    padding: clamp(16px, 3vw, 28px);
+    background: radial-gradient(ellipse at 50% 40%, #101317 0%, #050607 70%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    color: var(--screen-fg);
+    text-shadow: 0 0 4px currentColor;
+  }
+  .screen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  /* ---------- Piezas de pantalla ---------- */
+  .tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; }
+  .tab {
+    padding: 3px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--screen-fg);
+    font-family: var(--font-display);
+    font-size: 0.66em;
+    letter-spacing: 0.08em;
+  }
+  .tab.on { background: var(--screen-accent); border-color: var(--screen-accent); color: var(--cabin-bg); text-shadow: none; }
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--screen-fg);
+  }
+  .header-title {
+    font-family: var(--font-display);
+    font-size: 1.8em;
+    line-height: 1.2;
+    color: var(--screen-accent);
+  }
+  .sec { display: inline-block; padding: 0 5px; border-radius: 3px; background: var(--sec-null); color: #fff; font-family: var(--font-mono); font-size: 0.5em; line-height: 1.4; text-shadow: none; vertical-align: middle; }
+
+  .label { font-family: var(--font-display); letter-spacing: 0.1em; font-size: 0.8em; color: var(--screen-fg); }
+  .section-label { margin: 12px 0 2px; }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--screen-fg);
+  }
+  .value { text-align: right; color: var(--screen-accent); }
+  .name { color: var(--text); }
+  .danger { color: var(--kill); }
+
+  .faces { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .face { width: 28px; height: 28px; border: 1px solid var(--kill); border-radius: 6px; display: inline-grid; place-items: center; background: #1d1414; color: var(--kill); font-size: 0.8em; text-shadow: none; }
+
+  .rings { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .ring { display: flex; align-items: center; gap: 10px; }
+  .ring b { width: 40px; font-weight: 400; font-family: var(--font-display); font-size: 0.75em; }
+  .dots { display: flex; flex-wrap: wrap; gap: 5px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; background: var(--screen-fg); opacity: 0.7; }
+  .dot.act { background: var(--warn); opacity: 1; }
+  .dot.hot { background: var(--critical); opacity: 1; box-shadow: 0 0 6px 1px var(--critical); animation: blink 0.6s steps(2, jump-none) infinite alternate; }
+  .dot.here { outline: 2px solid var(--screen-accent); outline-offset: 1px; opacity: 1; }
+  @keyframes blink { to { background: #a3241d; box-shadow: none; } }
+
+  .strip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 12px; padding-top: 6px; border-top: 1px solid var(--screen-fg); font-size: 0.9em; }
+
+  .demo { font-size: clamp(0.72rem, 1.6vw, 0.92rem); display: flex; flex-direction: column; gap: 10px; }
+  .example-note { font-size: 0.75rem; color: var(--engraved); text-align: center; margin: -4px 0 0; }
+
+  /* ---------- Portada ---------- */
+  .hero-screen { display: flex; flex-direction: column; gap: 14px; }
+  .hero-screen h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 7vw, 3.6rem); letter-spacing: 0.08em; color: var(--screen-accent); line-height: 1.05; }
+  .hero-screen p { margin: 0; max-width: 60ch; }
+  .cursor { display: inline-block; width: 0.55em; height: 1em; margin-left: 4px; background: currentColor; vertical-align: -0.12em; animation: cursor 1.1s steps(1) infinite; }
+  @keyframes cursor { 50% { opacity: 0; } }
+
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 6px; }
+  /* Botón = opción seleccionada de la app: relleno de acento, texto oscuro, brillo. */
+  .download {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--screen-accent);
+    background: var(--screen-accent);
+    color: var(--cabin-bg);
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-shadow: none;
+    box-shadow: 0 0 6px 0 var(--screen-accent);
+  }
+  .download small { font-family: var(--font-mono); letter-spacing: 0; }
+  .download:hover { box-shadow: 0 0 14px 2px var(--screen-accent); }
+  .corp-note { color: var(--warn); font-size: 0.9em; }
+  /* Aviso de acceso: recuadro ámbar, como la alerta de nivel "perímetro". */
+  .lock {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 10px 14px;
+    border: 1px solid var(--warn);
+    border-radius: 4px;
+    background: #14110a;
+  }
+  .lock .label { color: var(--warn); }
+  .lock p { color: var(--text); }
+
+  /* ---------- Contenido de secciones ---------- */
+  .rows { display: flex; flex-direction: column; }
+  .rows .row { flex-wrap: wrap; }
+  .rows .row > .label { flex: 0 0 11rem; color: var(--screen-accent); }
+  .rows .row > p { flex: 1 1 20rem; margin: 0; min-width: 0; color: var(--text); }
+  .screen > p { margin: 0 0 10px; max-width: 65ch; color: var(--text); }
+  .screen > p:last-child { margin: 10px 0 0; }
+
+  .led { width: 12px; height: 12px; border-radius: 999px; display: inline-block; margin-right: 8px; vertical-align: -1px; text-shadow: none; }
+  .led.y { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+  .led.r { background: var(--danger); box-shadow: 0 0 8px var(--danger); animation: blink-led 0.6s steps(2, jump-none) infinite alternate; }
+  .led.c { background: var(--critical); box-shadow: 0 0 12px 2px var(--critical); animation: blink-led 0.12s steps(2, jump-none) infinite alternate; }
+  @keyframes blink-led { to { opacity: 0.25; } }
+  .jumps { color: var(--screen-fg); }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+  ol.steps li { counter-increment: step; }
+  ol.steps li::before { content: counter(step, decimal-leading-zero); flex: 0 0 3rem; font-family: var(--font-display); color: var(--screen-accent); }
+  kbd { font-family: var(--font-mono); color: var(--screen-accent); border: 1px solid var(--screen-fg); border-radius: 3px; padding: 0 5px; }
+
+  footer { display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; color: var(--engraved); text-align: center; }
+  footer p { margin: 0; }
+
+  @media (max-width: 600px) {
+    .rows .row > .label { flex-basis: 100%; }
+    .row { flex-wrap: wrap; }
+    .value { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dot.hot, .led.r, .led.c, .cursor { animation: none; }
+  }
+</style>
+
+</head>
+<body>
+<main class="wrap">
+  <div class="bezel">
+    <div class="bezel-label">CENTINELA — sistema de monitorización de VANGUARDIA DR</div>
+    <div class="screen hero-screen">
+      <h1>CENTINELA</h1>
+      <p>La computadora de a bordo de la corp. Va en una segunda pantalla mientras jugás y te avisa cuando hay hostiles cerca: lee tus canales de intel, sigue los kills en vivo de tu perímetro y sabe en qué sistema estás apenas saltás.</p>
+      <div class="hero-actions">
+        <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.3.0</small></a>
+        <span class="corp-note">Solo para pilotos de Vanguardia DR<span class="cursor" aria-hidden="true"></span></span>
+      </div>
+      <div class="lock">
+        <span class="label">ACCESO RESTRINGIDO</span>
+        <p>Centinela está bloqueada para quien no pertenece a la corp. Al iniciar sesión con EVE comprueba la corporación de tu personaje: si no es Vanguardia DR, la perilla de modo no gira y la pantalla se queda en DISPLAY OFF, sin acceso a ningún modo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bezel" role="img" aria-label="Vista de ejemplo de Centinela en modo RATEO">
+    <div class="bezel-label">MODO RATEO · VISTA DE EJEMPLO</div>
+    <div class="screen demo">
+      <div class="tabs"><span class="tab">OFF</span><span class="tab">MONITOR</span><span class="tab">WH NAV</span><span class="tab on">RATEO</span><span class="tab">RADIO</span></div>
+      <div class="header">
+        <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
+        <span class="danger">AQUÍ · ⚠ 1 kill(s) 1h</span>
+      </div>
+      <div>
+        <div class="label section-label">AMENAZAS</div>
+        <div class="row"><span class="name">AQUÍ 1DQ1-A</span><span class="value danger">1 kill(s) · Sabre 4m · 62M ISK</span></div>
+        <div class="row"><span><span class="name">2j 8WA-Z6</span><br><span class="danger">▲ intel hace 1m · 5 hostiles · por Kaelen Voss</span></span><span class="faces"><span class="face">KV</span><span class="face">+4</span></span></div>
+      </div>
+      <div>
+        <div class="row"><span class="label">PERÍMETRO</span><span class="value">4j · 15 sistemas</span></div>
+        <div class="rings">
+          <div class="ring"><b>AQUÍ</b><div class="dots"><span class="dot act here"></span></div></div>
+          <div class="ring"><b>1j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="ring"><b>2j</b><div class="dots"><span class="dot hot"></span><span class="dot"></span><span class="dot"></span><span class="dot act"></span><span class="dot"></span></div></div>
+          <div class="ring"><b>3j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+          <div class="ring"><b>4j</b><div class="dots"><span class="dot"></span><span class="dot"></span></div></div>
+        </div>
+      </div>
+      <div class="strip"><span><span class="label">INTEL</span> <span class="value">intel.canal</span></span><span><span class="label">BOUNTY</span> <span class="value">48.250.000 ISK</span></span></div>
+    </div>
+    <p class="example-note">Los sistemas, pilotos y cifras de esta vista son ilustrativos.</p>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="modos">MODOS DE LA PERILLA</h2>
+    <div class="screen">
+      <p>Se cambia de modo girando la perilla, como en un panel físico. Antes hay que iniciar sesión con EVE desde ⚙.</p>
+      <div class="rows">
+        <div class="row"><span class="label">MONITOR</span><p>El sistema en el que estás, su seguridad, tu nave y las puertas a los vecinos, con los kills de la última hora en cada uno.</p></div>
+        <div class="row"><span class="label">WH NAV</span><p>Al entrar en un wormhole: clase, fenómeno y sus efectos, la static (destino, duración y masa) y los wandering que pueden aparecer. Funciona sin internet, con datos de CCP.</p></div>
+        <div class="row"><span class="label">RATEO</span><p>El perímetro de hasta 4 saltos alrededor tuyo. Vigila tus canales de intel y los kills en vivo, muestra quién reportó y a qué hostiles, y suma las recompensas de la sesión.</p></div>
+        <div class="row"><span class="label">RADIO</span><p>Radios online para acompañar el rateo. Se corta sola al cambiar de modo o apagar.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="alertas">ALERTAS</h2>
+    <div class="screen">
+      <p>Cuando un mensaje de intel o un kill nombra un sistema de tu perímetro, suena una alarma, se enciende el LED del marco y la pantalla muestra la alerta durante 5 segundos. La gravedad depende de la distancia.</p>
+      <div class="rows">
+        <div class="row"><span class="label">ATENCIÓN</span><p><span class="led y"></span><span class="jumps">2+ saltos.</span> Doble pitido suave y LED amarillo. Actividad en el perímetro, para estar atento.</p></div>
+        <div class="row"><span class="label">PELIGRO</span><p><span class="led r"></span><span class="jumps">1 salto.</span> Tres pares de tonos y LED rojo. Hay enemigos al lado.</p></div>
+        <div class="row"><span class="label">CRÍTICA</span><p><span class="led c"></span><span class="jumps">Tu sistema.</span> Sirena y LED rojo estroboscópico. Hay enemigos donde estás.</p></div>
+      </div>
+      <p>Los mensajes con «clr» o «clear» no hacen sonar la alarma: marcan el sistema como limpio.</p>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="instalar">INSTALACIÓN EN WINDOWS</h2>
+    <div class="screen">
+      <ol class="steps rows">
+        <li class="row"><p>Descargá el instalador con el botón de arriba y ejecutalo.</p></li>
+        <li class="row"><p>Windows va a mostrar «Windows protegió su PC» porque el instalador no está firmado. Tocá <kbd>Más información</kbd> y después <kbd>Ejecutar de todas formas</kbd>.</p></li>
+        <li class="row"><p>Abrí Centinela, girá la perilla de encendido a ON y entrá en ⚙ para iniciar sesión con tu cuenta de EVE.</p></li>
+        <li class="row"><p>Si tu personaje es de Vanguardia DR, la perilla de modo se desbloquea y ya podés usar todos los modos. Si no lo es, la app queda bloqueada en DISPLAY OFF.</p></li>
+      </ol>
+      <p>Para actualizar, bajá el instalador nuevo y ejecutalo encima. Tu configuración se mantiene.</p>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="intel">CONFIGURAR EL INTEL</h2>
+    <div class="screen">
+      <ol class="steps rows">
+        <li class="row"><p>En EVE, activá <kbd>Log chat to file</kbd> en la configuración de chat. Sin eso el juego no guarda los mensajes y Centinela no tiene qué leer.</p></li>
+        <li class="row"><p>Abrí en el juego los canales de intel que querés vigilar.</p></li>
+        <li class="row"><p>En Centinela, entrá en ⚙ → Canales de intel y marcá los tuyos. Si no aparece la carpeta de logs, usá <kbd>Elegir carpeta...</kbd>.</p></li>
+        <li class="row"><p>Pasá a modo RATEO. El LED verde parpadeando indica que está escuchando.</p></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="preguntas">PREGUNTAS</h2>
+    <div class="screen">
+      <div class="rows">
+        <div class="row"><span class="label">¿RESPETA EL EULA?</span><p>Sí. No toca el cliente ni automatiza nada. Solo lee la API oficial de CCP (ESI) y los archivos de chat que el propio juego guarda en tu PC. Los kills vienen de zKillboard.</p></div>
+        <div class="row"><span class="label">¿Y SI NO SOY DE LA CORP?</span><p>No funciona. La app se instala y enciende, pero después de iniciar sesión queda bloqueada en DISPLAY OFF. El acceso depende de la corporación del personaje con el que entrás, no de la cuenta: si tenés alts en otras corps, iniciá sesión con el de Vanguardia DR.</p></div>
+        <div class="row"><span class="label">¿QUÉ PERMISOS PIDE?</span><p>Lectura de los datos de tu personaje, todos juntos para no volver a pedirlos con cada función nueva. Hoy usa la ubicación, la nave, la corporación y la billetera para las recompensas.</p></div>
+        <div class="row"><span class="label">¿HAY PARA LINUX?</span><p>Sí, pedila en el canal de la corp.</p></div>
+        <div class="row"><span class="label">¿SE ACTUALIZA SOLA?</span><p>Todavía no. Por ahora cada versión nueva se descarga desde esta página.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 SLAMes. Uso gratuito para miembros de Vanguardia DR. Todos los derechos reservados.</p>
+    <p>Centinela es una herramienta de la comunidad, sin afiliación ni respaldo de CCP.</p>
+    <p>© 2014 CCP hf. All rights reserved. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.</p>
+  </footer>
+</main>
+</body>
+</html>
