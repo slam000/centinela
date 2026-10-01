@@ -234,7 +234,7 @@
     .value { text-align: left; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .dot.hot, .led.r, .led.c, .cursor { animation: none; }
+    .dot.hot, .led.r, .led.c, .led.g, .cursor { animation: none; }
   }
 
   /* ---------- Íconos animados de los modos: copia de src/components/ModeIcon.css ---------- */
@@ -441,6 +441,35 @@
   .lock-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   @media (max-width: 600px) { .mode-cell { flex-basis: 100%; } }
 
+  /* ---------- Controles (réplica de la barra de la app, FlightComputer.css) ---------- */
+  .controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 4px 6px 0; }
+  .controls-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .selector { display: flex; align-items: center; gap: 8px; }
+  .knob, .round-btn {
+    position: relative; flex: none; border-radius: 999px; border: 1px solid #3a3f46;
+    background: radial-gradient(circle at 32% 28%, #454b53 0%, #2b2f35 55%, #17191c 100%);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1), inset 0 -2px 3px rgba(0, 0, 0, 0.45);
+  }
+  .knob { width: 36px; height: 36px; }
+  .knob i { position: absolute; top: 50%; left: 50%; width: 2px; height: 14px; margin: -14px 0 0 -1px; background: var(--screen-accent); transform-origin: 50% 100%; box-shadow: 0 0 8px var(--screen-accent); }
+  .knob-labels { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+  .knob-labels span { padding: 1px 4px; border-radius: 2px; font-family: var(--font-display); font-size: 10px; letter-spacing: 0.05em; line-height: 1; color: var(--screen-fg); }
+  .knob-labels span.on { background: var(--screen-accent); color: #050607; text-shadow: none; box-shadow: 0 0 6px 0 var(--screen-accent); }
+  .round-btn { width: 40px; height: 40px; display: grid; place-items: center; font-size: 16px; color: var(--screen-fg); }
+  .round-btn .pilot-led { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); width: 7px; height: 7px; border-radius: 999px; background: #6b7280; }
+  .alert-led-group { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .alert-led-group b { font-family: var(--font-display); font-weight: 400; font-size: 9px; letter-spacing: 0.08em; color: var(--engraved); }
+  .led.g { background: #3ddc71; box-shadow: 0 0 8px #3ddc71; animation: blink-led 1.2s ease-in-out infinite alternate; }
+  .led.off { background: radial-gradient(circle at 35% 30%, #a33a32 0%, #6b1d18 60%, #3d0f0c 100%); }
+  .alert-led-group .led { width: 10px; height: 10px; margin: 0; }
+  .ctrl-cell { flex: 0 0 11rem; display: flex; align-items: center; gap: 10px; color: var(--screen-accent); }
+  .ctrl-cell .label { color: var(--screen-accent); }
+  .ctrl-cell .led { width: 12px; height: 12px; margin: 0 8px; }
+  .ctrl-cell .round-btn { width: 30px; height: 30px; font-size: 13px; }
+  .ctrl-cell .knob { width: 28px; height: 28px; }
+  .ctrl-cell .knob i { height: 10px; margin-top: -10px; }
+  @media (max-width: 600px) { .ctrl-cell { flex-basis: 100%; } .controls-right { margin-left: 0; } }
+
   /* ---------- Sugerencias / donaciones ---------- */
   .pilot { display: flex; align-items: flex-start; gap: 18px; }
   .pilot-portrait { flex: none; width: 96px; height: 96px; border: 1px solid var(--screen-accent); border-radius: 6px; box-shadow: 0 0 10px -2px var(--screen-accent); }
@@ -588,6 +617,29 @@
       <div class="strip"><span><span class="label">INTEL</span> <span class="value">intel.canal</span></span><span><span class="label">BOUNTY</span> <span class="value">48.250.000 ISK</span></span></div>
     </div>
     <p class="example-note">Los sistemas, pilotos y cifras de esta vista son ilustrativos.</p>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="controles">CONTROLES</h2>
+    <div class="screen">
+      <p>Todo se maneja desde la barra de abajo del monitor, como en un tablero de nave: la pantalla es solo para leer.</p>
+      <div class="rows">
+        <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="label">ENCENDIDO</span></span><p>Prende y apaga la computadora, con su secuencia de arranque y de apagado.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="label">MODO</span></span><p>Cambia de modo con cada giro. El modo activo se ve en negativo. Solo gira con la sesión iniciada y siendo de Vanguardia DR.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="led g"></span><span class="label">ALERTA</span></span><p>Verde parpadeando: está escuchando tus canales de intel. Amarillo, rojo o rojo estroboscópico: hay una alerta (ver <a href="#alertas">Alertas</a>). Apagado: no está vigilando.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">💡</span><span class="label">LUZ</span></span><p>Retroilumina los controles para usarlos a oscuras, como la luz de una cabina. El puntito verde indica que está prendida.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">⚙</span><span class="label">AJUSTES</span></span><p>Iniciar sesión con EVE, skin de facción, voz, perímetro de RATEO, canales de intel y versión. Un puntito azul avisa que hay una actualización lista.</p></div>
+      </div>
+    </div>
+    <div class="controls" role="img" aria-label="Barra de controles de Centinela: encendido en ON, modo en RATEO, LED de alerta escuchando, luz y ajustes">
+      <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="knob-labels"><span class="on">ON</span><span>OFF</span></span></div>
+      <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="knob-labels"><span>OFF</span><span>MONITOR</span><span>WH NAV</span><span class="on">RATEO</span><span>RADIO</span></span></div>
+      <div class="controls-right">
+        <span class="alert-led-group"><span class="led g"></span><b>ALERTA</b></span>
+        <span class="round-btn">💡<span class="pilot-led"></span></span>
+        <span class="round-btn">⚙</span>
+      </div>
+    </div>
   </div>
 
   <div class="bezel">
