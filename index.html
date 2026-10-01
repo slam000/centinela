@@ -432,6 +432,37 @@
   .lock .fc-mode-icon { width: 40px; height: 40px; }
   .lock-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   @media (max-width: 600px) { .mode-cell { flex-basis: 100%; } }
+
+  /* ---------- Sugerencias / donaciones ---------- */
+  .pilot { display: flex; align-items: flex-start; gap: 18px; }
+  .pilot-portrait { flex: none; width: 96px; height: 96px; border: 1px solid var(--screen-accent); border-radius: 6px; box-shadow: 0 0 10px -2px var(--screen-accent); }
+  .pilot-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .pilot-name { font-family: var(--font-display); font-size: 1.5em; letter-spacing: 0.06em; color: var(--screen-accent); }
+  .pilot-text p { margin: 0; max-width: 60ch; color: var(--text); }
+  .screen strong { color: var(--screen-accent); font-weight: 400; }
+  .pilot-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 4px; }
+  .copy {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--screen-fg);
+    background: none;
+    color: var(--screen-fg);
+    font-family: var(--font-display);
+    font-size: 0.75em;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-shadow: inherit;
+  }
+  .copy:hover { border-color: var(--screen-accent); color: var(--screen-accent); }
+  .copy:focus-visible { outline: 2px solid var(--screen-accent); outline-offset: 2px; }
+  .copy-status { font-size: 0.85em; color: var(--screen-accent); }
+  .donate { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+  .donate p { margin: 0; max-width: 62ch; color: var(--text); }
+  .isk { flex: none; font-family: var(--font-display); font-size: 2.2em; color: var(--warn); }
+  @media (max-width: 600px) {
+    .pilot { flex-direction: column; }
+    .donate { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 
 </head>
@@ -616,11 +647,53 @@
     </div>
   </div>
 
+  <div class="bezel">
+    <h2 class="bezel-label" id="sugerencias">SUGERENCIAS</h2>
+    <div class="screen">
+      <div class="pilot">
+        <img class="pilot-portrait" src="data:image/jpeg;base64,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" alt="Retrato de SLAMes" width="96" height="96">
+        <div class="pilot-text">
+          <span class="pilot-name">SLAMes</span>
+          <p>¿Una idea, un error o algo que te gustaría ver en Centinela? Mandale un EVE Mail a <strong>SLAMes</strong> o escribile en el canal de la corp. Todas las funciones de la app salieron de pedidos así.</p>
+          <div class="pilot-actions">
+            <button type="button" class="copy" data-copy="SLAMes">COPIAR NOMBRE</button>
+            <a href="https://zkillboard.com/character/2117964877/">zKillboard ↗</a>
+            <span class="copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="donar">DONACIONES</h2>
+    <div class="screen donate">
+      <p>¿Te salvó la nave alguna alarma? Si Centinela te resulta útil, podés agradecerlo con una donación de ISK a <strong>SLAMes</strong>: abrí su ficha en el juego y elegí <kbd>Give Money</kbd>. Es totalmente voluntario y la app sigue siendo gratis para toda la corp.</p>
+      <span class="isk">o7</span>
+    </div>
+  </div>
+
   <footer>
     <p>© 2026 SLAMes. Uso gratuito para miembros de Vanguardia DR. Todos los derechos reservados.</p>
     <p>Centinela es una herramienta de la comunidad, sin afiliación ni respaldo de CCP.</p>
     <p>© 2014 CCP hf. All rights reserved. "EVE", "EVE Online", "CCP", and all related logos and images are trademarks or registered trademarks of CCP hf.</p>
   </footer>
 </main>
+
+<script>
+  // "Copiar nombre": para pegarlo en el buscador de personajes o en un EVE Mail.
+  for (const button of document.querySelectorAll('[data-copy]')) {
+    const status = button.parentElement.querySelector('.copy-status')
+    button.addEventListener('click', async () => {
+      const text = button.dataset.copy
+      try {
+        await navigator.clipboard.writeText(text)
+        status.textContent = 'Copiado: ' + text
+      } catch {
+        status.textContent = 'Copialo a mano: ' + text
+      }
+    })
+  }
+</script>
 </body>
 </html>
