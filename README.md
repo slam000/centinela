@@ -9,5 +9,7 @@ la corporación Vanguardia DR para EVE Online.
 Uso exclusivo para miembros de Vanguardia DR (ver [LICENSE](LICENSE)). La app
 queda bloqueada para personajes de otras corporaciones.
 
+Centinela no está afiliada ni respaldada por Fenris Creations (antes CCP Games).
+
 © 2014 CCP hf. All rights reserved. "EVE", "EVE Online", "CCP", and all related
 logos and images are trademarks or registered trademarks of CCP hf.
