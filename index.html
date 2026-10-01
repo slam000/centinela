@@ -506,6 +506,15 @@
   .honor-pilot:hover img { border-color: var(--screen-accent); box-shadow: 0 0 10px -2px var(--screen-accent); }
   .honor-empty span { display: grid; place-items: center; border: 1px dashed var(--screen-fg); color: var(--screen-fg); font-family: var(--font-display); font-size: 1.4em; opacity: 0.5; }
   .honor-note { margin: 14px 0 0; color: var(--text); }
+  /* Donante de incógnito ("no aparecés ni en el D-Scan"): silueta genérica casi
+     transparente con un brillo que la recorre, como el efecto de cloak. */
+  .honor-cloaked { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.85em; color: var(--screen-fg); font-style: italic; }
+  .honor-cloaked .cloak { position: relative; overflow: hidden; width: 64px; height: 64px; border-radius: 6px; border: 1px solid rgba(127, 216, 208, 0.25); background: rgba(127, 216, 208, 0.04); color: var(--screen-accent); }
+  .honor-cloaked svg { display: block; width: 100%; height: 100%; opacity: 0.22; -webkit-mask-image: repeating-linear-gradient(0deg, #000 0 2px, transparent 2px 4px); mask-image: repeating-linear-gradient(0deg, #000 0 2px, transparent 2px 4px); animation: cloak-flicker 4s ease-in-out infinite; }
+  .honor-cloaked .cloak::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(127, 216, 208, 0.28) 50%, transparent 65%); transform: translateX(-100%); animation: cloak-sweep 3.2s ease-in-out infinite; }
+  @keyframes cloak-flicker { 0%, 100% { opacity: 0.22; } 45% { opacity: 0.12; } 50% { opacity: 0.32; } 55% { opacity: 0.14; } }
+  @keyframes cloak-sweep { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .honor-cloaked svg, .honor-cloaked .cloak::after { animation: none; } }
   @media (max-width: 600px) {
     .pilot { flex-direction: column; }
     .donate { flex-direction: column; align-items: flex-start; }
@@ -746,6 +755,8 @@
       <div class="honor-grid">
         <!-- Un donante por línea, el último arriba (reemplaza una casilla vacía):
         <a class="honor-pilot" href="https://zkillboard.com/character/ID/" target="_blank" rel="noreferrer"><img src="https://images.evetech.net/characters/ID/portrait?size=128" alt=""><span>NOMBRE</span></a>
+        Donante que prefiere no figurar (va en el mismo orden, sin nombre ni link):
+        <div class="honor-cloaked"><span class="cloak"><svg viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><circle cx="32" cy="24" r="11"/><path d="M10 64c1-14 10-22 22-22s21 8 22 22z"/></svg></span><span>Cloaked</span></div>
         -->
         <div class="honor-empty" aria-hidden="true"><span>?</span></div>
         <div class="honor-empty" aria-hidden="true"><span>?</span></div>
