@@ -496,6 +496,16 @@
   .donate { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
   .donate p { margin: 0; max-width: 62ch; color: var(--text); }
   .isk { flex: none; font-family: var(--font-display); font-size: 2.2em; color: var(--warn); }
+  /* Panel de donantes: retrato + nombre, sin montos (no es un ranking). Las
+     casillas vacías (.honor-empty) se van reemplazando por donantes. */
+  .screen > .honor-title { margin: 0 0 12px; color: var(--warn); }
+  .honor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 14px; }
+  .honor-pilot, .honor-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; color: var(--text); text-decoration: none; font-size: 0.85em; text-align: center; overflow-wrap: anywhere; }
+  .honor-pilot img, .honor-empty span { width: 64px; height: 64px; border-radius: 6px; }
+  .honor-pilot img { border: 1px solid var(--warn); box-shadow: 0 0 10px -2px var(--warn); }
+  .honor-pilot:hover img { border-color: var(--screen-accent); box-shadow: 0 0 10px -2px var(--screen-accent); }
+  .honor-empty span { display: grid; place-items: center; border: 1px dashed var(--screen-fg); color: var(--screen-fg); font-family: var(--font-display); font-size: 1.4em; opacity: 0.5; }
+  .honor-note { margin: 14px 0 0; color: var(--text); }
   @media (max-width: 600px) {
     .pilot { flex-direction: column; }
     .donate { flex-direction: column; align-items: flex-start; }
@@ -730,6 +740,21 @@
     <div class="screen donate">
       <p>¿Te salvó la nave alguna alarma? Si Centinela te resulta útil, podés agradecerlo con una donación de ISK a <strong>SLAMes</strong>: abrí su ficha en el juego y elegí <kbd>Give Money</kbd>. Es totalmente voluntario y la app sigue siendo gratis para toda la corp.</p>
       <span class="isk">o7</span>
+    </div>
+    <div class="screen">
+      <p class="label honor-title">TRIPULACIÓN DE HONOR</p>
+      <div class="honor-grid">
+        <!-- Un donante por línea, el último arriba (reemplaza una casilla vacía):
+        <a class="honor-pilot" href="https://zkillboard.com/character/ID/" target="_blank" rel="noreferrer"><img src="https://images.evetech.net/characters/ID/portrait?size=128" alt=""><span>NOMBRE</span></a>
+        -->
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+        <div class="honor-empty" aria-hidden="true"><span>?</span></div>
+      </div>
+      <p class="honor-note">Todavía no hay nadie en el panel. ¿Serás el primero? Quien done aparece acá con su retrato, sin montos. Si preferís no figurar, avisale a SLAMes.</p>
     </div>
   </div>
 
