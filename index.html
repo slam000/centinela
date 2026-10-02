@@ -431,6 +431,10 @@
   /* Ícono del tipo de piloto (brújula, calavera, soldado, nota): estático, en acento. */
   .mode-for-icon { flex: none; width: 28px; height: 28px; color: var(--screen-accent); filter: drop-shadow(0 0 3px currentColor); }
   .rows .row.mode-row { align-items: center; }
+  /* Versiones viejas de NOVEDADES, plegadas. */
+  .older { margin-top: 12px; }
+  .older summary { cursor: pointer; color: var(--screen-accent); font-family: var(--font-display); font-size: 0.85em; letter-spacing: 0.06em; }
+  .older[open] summary { margin-bottom: 8px; }
   .demo .header .fc-mode-icon { width: 46px; height: 46px; }
   .demo .header { align-items: center; }
   .head-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -596,7 +600,7 @@
       </div>
       <p>La computadora de a bordo de la corp. Va en una segunda pantalla mientras jugás y te avisa cuando hay hostiles cerca: lee tus canales de intel, sigue los kills en vivo de tu perímetro y sabe en qué sistema estás apenas saltás.</p>
       <div class="hero-actions">
-        <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.4.4</small></a>
+        <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.4.5</small></a>
         <span class="corp-note">Solo para pilotos de Vanguardia DR<span class="cursor" aria-hidden="true"></span></span>
       </div>
       <div class="lock">
@@ -648,8 +652,9 @@
         <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="label">ENCENDIDO</span></span><p>Prende y apaga la computadora, con su secuencia de arranque y de apagado.</p></div>
         <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="label">MODO</span></span><p>Cambia de modo con cada giro. El modo activo se ve en negativo. Solo gira con la sesión iniciada y siendo de Vanguardia DR.</p></div>
         <div class="row mode-row"><span class="ctrl-cell"><span class="led g"></span><span class="label">ALERTA</span></span><p>Verde parpadeando: está escuchando tus canales de intel. Amarillo, rojo o rojo estroboscópico: hay una alerta (ver <a href="#alertas">Alertas</a>). Apagado: no está vigilando.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">▭</span><span class="label">VENTANITA</span></span><p>Achica Centinela a una ventanita siempre encima del juego, para quien juega con un solo monitor (ver <a href="#alertas">Alertas</a>).</p></div>
         <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">💡</span><span class="label">LUZ</span></span><p>Retroilumina los controles para usarlos a oscuras, como la luz de una cabina. El puntito verde indica que está prendida.</p></div>
-        <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">⚙</span><span class="label">AJUSTES</span></span><p>Iniciar sesión con EVE, skin de facción, voz, perímetro de RATEO, canales de intel y versión. Un puntito azul avisa que hay una actualización lista.</p></div>
+        <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">⚙</span><span class="label">AJUSTES</span></span><p>Iniciar sesión con EVE, skin de facción, voz, perímetro de RATEO, canales de intel, versión (con las novedades) y apoyo. Un puntito azul avisa que hay una actualización lista.</p></div>
       </div>
     </div>
     <div class="controls" role="img" aria-label="Barra de controles de Centinela: encendido en ON, modo en RATEO, LED de alerta escuchando, luz y ajustes">
@@ -657,6 +662,7 @@
       <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="knob-labels"><span>OFF</span><span>MONITOR</span><span>WH NAV</span><span class="on">RATEO</span><span>RADIO</span></span></div>
       <div class="controls-right">
         <span class="alert-led-group"><span class="led g"></span><b>ALERTA</b></span>
+        <span class="round-btn">▭</span>
         <span class="round-btn">💡<span class="pilot-led"></span></span>
         <span class="round-btn">⚙</span>
       </div>
@@ -687,6 +693,7 @@
         <div class="row"><span class="label">CRÍTICA</span><p><span class="led c"></span><span class="jumps">Tu sistema.</span> Sirena y LED rojo estroboscópico. Hay enemigos donde estás.</p></div>
       </div>
       <p>Los mensajes con «clr» o «clear» no hacen sonar la alarma: marcan el sistema como limpio.</p>
+      <p><strong>¿Jugás con un solo monitor?</strong> Tocá el botón ▭ de la barra y Centinela se achica a una ventanita siempre encima del juego. En reposo muestra solo el LED; con una alerta se agranda unos segundos con el color de la gravedad y dónde es («1j HY-RWO · 5 hostiles»). El botón de la ventanita la vuelve a agrandar. Jugá en ventana o en <kbd>Fixed Window</kbd>: en pantalla completa el juego la tapa.</p>
     </div>
   </div>
 
@@ -712,6 +719,27 @@
         <li class="row"><p>En Centinela, entrá en ⚙ → Canales de intel y marcá los tuyos. Si no aparece la carpeta de logs, usá <kbd>Elegir carpeta...</kbd>.</p></li>
         <li class="row"><p>Pasá a modo RATEO. El LED verde parpadeando indica que está escuchando.</p></li>
       </ol>
+    </div>
+  </div>
+
+  <div class="bezel">
+    <h2 class="bezel-label" id="novedades">NOVEDADES</h2>
+    <div class="screen">
+      <p>Lo nuevo de cada versión. Centinela se actualiza sola al cerrarla; en ⚙ → Versión ves cuál tenés.</p>
+      <div class="rows">
+        <div class="row"><span class="label">0.4.5</span><p><strong>Ventanita de alertas</strong> para quien juega con un solo monitor: el botón ▭ achica Centinela a una ventanita siempre encima del juego que solo se agranda con una alerta. En ⚙ → Versión, link a estas novedades, y después de cada actualización la pantalla avisa qué hay de nuevo. En ⚙ → Apoyo, cómo sumarte a la Tripulación de Honor.</p></div>
+        <div class="row"><span class="label">0.4.4</span><p><strong>Alarmas más fuertes.</strong> Las de intel y kills suenan bastante más; se ajustan en ⚙ → Volumen de alarma, con un botón Probar.</p></div>
+        <div class="row"><span class="label">0.4.3</span><p>Las pestañas de modo son una franja de lado a lado, el LED de ALERTA está en el centro del marco y los botones 💡 y ⚙ más separados.</p></div>
+      </div>
+      <details class="older">
+        <summary>Versiones anteriores</summary>
+        <div class="rows">
+          <div class="row"><span class="label">0.4.2</span><p>La posición elegida de cada perilla se ve en negativo, rellena con el color de tu skin.</p></div>
+          <div class="row"><span class="label">0.4.1</span><p>Arreglos del intel: aparecen los retratos de los hostiles, «Fulano +1» cuenta 2, «status?» ya no alarma y los seguimientos sin nombres conservan los pilotos ya reportados.</p></div>
+          <div class="row"><span class="label">0.4.0</span><p><strong>Actualización automática</strong>: busca versiones nuevas, las descarga sola y las instala al cerrar la app. Ledcito azul en ⚙ cuando hay una lista.</p></div>
+          <div class="row"><span class="label">0.3.0</span><p>Intel con quién reportó y retratos de los hostiles, «clr» marca el sistema como limpio, AMENAZAS incluye reportes de intel y ⚙ ordenado como tabla.</p></div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -753,7 +781,7 @@
       <span class="isk">o7</span>
     </div>
     <div class="screen">
-      <p class="label honor-title">TRIPULACIÓN DE HONOR</p>
+      <p class="label honor-title" id="tripulacion">TRIPULACIÓN DE HONOR</p>
       <div class="honor-grid">
         <!-- Un donante por línea, el último arriba (reemplaza una casilla vacía):
         <a class="honor-pilot" href="https://zkillboard.com/character/ID/" target="_blank" rel="noreferrer"><img src="https://images.evetech.net/characters/ID/portrait?size=128" alt=""><span>NOMBRE</span></a>
