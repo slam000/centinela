@@ -410,6 +410,33 @@
   100% { opacity: 0; }
 }
 
+/* JUMP NAV: capital entrando a un cyno */
+.fc-icon-cyno {
+  animation: fc-icon-cyno 1.6s ease-in-out infinite;
+}
+
+.fc-icon-cyno-ring {
+  transform-origin: 36px 40px;
+  animation: fc-icon-pulse 1.6s ease-in-out infinite;
+}
+
+.fc-icon-capital {
+  transform-origin: 28px 24px;
+  animation: fc-icon-capital 3.2s ease-in infinite;
+}
+
+@keyframes fc-icon-cyno {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes fc-icon-capital {
+  0% { transform: translateX(-4px); opacity: 0; }
+  15% { opacity: 1; }
+  70% { transform: translateX(8px); opacity: 1; }
+  85%, 100% { transform: translateX(12px) scaleX(0.2); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fc-mode-icon * {
     animation: none !important;
@@ -600,7 +627,7 @@
       </div>
       <p>La computadora de a bordo de la corp. Va en una segunda pantalla mientras jugás y te avisa cuando hay hostiles cerca: lee tus canales de intel, sigue los kills en vivo de tu perímetro y sabe en qué sistema estás apenas saltás.</p>
       <div class="hero-actions">
-        <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.4.6</small></a>
+        <a class="download" href="https://github.com/slam000/centinela/releases/latest">DESCARGAR PARA WINDOWS <small>v0.4.7</small></a>
         <span class="corp-note">Solo para pilotos de Vanguardia DR<span class="cursor" aria-hidden="true"></span></span>
       </div>
       <div class="lock">
@@ -616,7 +643,7 @@
   <div class="bezel" role="img" aria-label="Vista de ejemplo de Centinela en modo RATEO">
     <div class="bezel-label">MODO RATEO · VISTA DE EJEMPLO</div>
     <div class="screen demo">
-      <div class="tabs"><span class="tab">OFF</span><span class="tab">MONITOR</span><span class="tab">WH NAV</span><span class="tab on">RATEO</span><span class="tab">RADIO</span></div>
+      <div class="tabs"><span class="tab">OFF</span><span class="tab">MONITOR</span><span class="tab">WH NAV</span><span class="tab on">RATEO</span><span class="tab">JUMP NAV</span><span class="tab">RADIO</span></div>
       <div class="header">
         <div class="head-text">
           <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
@@ -659,7 +686,7 @@
     </div>
     <div class="controls" role="img" aria-label="Barra de controles de Centinela: encendido en ON, modo en RATEO, LED de alerta escuchando, luz y ajustes">
       <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="knob-labels"><span class="on">ON</span><span>OFF</span></span></div>
-      <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="knob-labels"><span>OFF</span><span>MONITOR</span><span>WH NAV</span><span class="on">RATEO</span><span>RADIO</span></span></div>
+      <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="knob-labels"><span>OFF</span><span>MONITOR</span><span>WH NAV</span><span class="on">RATEO</span><span>JUMP NAV</span><span>RADIO</span></span></div>
       <div class="controls-right">
         <span class="alert-led-group"><span class="led g"></span><b>ALERTA</b></span>
         <span class="round-btn">▭</span>
@@ -678,6 +705,7 @@
         <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--monitor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="1.5"><line class="fc-icon-star" x1="48" y1="6" x2="52" y2="6"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="12" x2="54" y2="12"/><line class="fc-icon-star fc-icon-star--slow" x1="48" y1="19" x2="50" y2="19"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="38" x2="54" y2="38"/><line class="fc-icon-star" x1="48" y1="43" x2="52" y2="43"/></g><g class="fc-icon-ship"><path class="fc-icon-flame" d="M14 21 L4 24 L14 27"/><path d="M8 14 L30 21 L40 24 L30 27 L8 34 L14 24 Z" fill="currentColor" fill-opacity="0.25"/></g></svg><span class="label">MONITOR</span></span><p>El sistema en el que estás, su seguridad, tu nave y las puertas a los vecinos, con los kills de la última hora en cada uno.<span class="mode-for"><svg class="mode-for-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Explorador"><circle cx="12" cy="12" r="9"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2"/><path d="M12 7l2.5 5h-5z" fill="currentColor"/><path d="M9.5 12h5L12 17z"/></svg><span><span class="label">IDEAL PARA</span> exploradores de null sec. Te avisa de lo que pasa en tu sistema y de posibles campeos de puertas en los vecinos antes de saltar.</span></span></p></div>
         <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--wh-nav" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-swirl"><path d="M24 24 m0 -4 a4 4 0 1 1 -4 4"/><path d="M24 24 m0 -10 a10 10 0 1 1 -10 10"/><path d="M24 24 m0 -17 a17 17 0 1 1 -17 17"/></g><circle class="fc-icon-swirl-core" cx="24" cy="24" r="2.5" fill="currentColor"/></svg><span class="label">WH NAV</span></span><p>Al entrar en un wormhole: clase, fenómeno y sus efectos, la static (destino, duración y masa) y los wandering que pueden aparecer. Funciona sin internet, con datos oficiales de Fenris Creations (antes CCP Games).<span class="mode-for"><svg class="mode-for-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Pirata de wormholes"><path d="M4 20l16-6M4 14l16 6" stroke-width="1.8"/><circle cx="3.5" cy="13.5" r="1.2"/><circle cx="20.5" cy="13.5" r="1.2"/><circle cx="3.5" cy="20.5" r="1.2"/><circle cx="20.5" cy="20.5" r="1.2"/><path d="M12 2.5c-4 0-6.5 2.7-6.5 6.2 0 2 1 3.4 2.5 4.2V15h8v-2.1c1.5-.8 2.5-2.2 2.5-4.2 0-3.5-2.5-6.2-6.5-6.2z" fill="#050607"/><circle cx="9.6" cy="8.8" r="1.5" fill="currentColor"/><circle cx="14.4" cy="8.8" r="1.5" fill="currentColor"/><path d="M12 10.8l-.9 1.6h1.8z" fill="currentColor"/><path d="M10 15v-1.5M12 15v-1.5M14 15v-1.5"/></svg><span><span class="label">IDEAL PARA</span> quien se mueve por J-space. Sabés dónde estás, por dónde podés salir y qué penalizaciones o bonificaciones te da el clima del sistema.</span></span></p></div>
         <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg><span class="label">RATEO</span></span><p>El perímetro de hasta 4 saltos alrededor tuyo. Vigila tus canales de intel y los kills en vivo, muestra quién reportó y a qué hostiles, y suma las recompensas de la sesión.<span class="mode-for"><svg class="mode-for-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Soldado"><path d="M4.5 14v-3.5a7.5 7.5 0 0 1 15 0V14" fill="currentColor" fill-opacity="0.25"/><path d="M4.5 10.5h15"/><rect x="7" y="11.5" width="10" height="2.4" rx="1" fill="currentColor"/><path d="M4.5 14l3.5 2.5M19.5 14L16 16.5"/><path d="M8 14v1.5a4 4 0 0 0 8 0V14"/><path d="M3 22.5c.8-2.6 4-4 9-4s8.2 1.4 9 4"/></svg><span><span class="label">IDEAL PARA</span> los aficionados al grindeo en null sec. Te avisa de las amenazas que se acercan mientras rateás.</span></span></p></div>
+        <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--jump" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line class="fc-icon-cyno" x1="36" y1="4" x2="36" y2="40" stroke-width="3"/><ellipse class="fc-icon-cyno-ring" cx="36" cy="40" rx="9" ry="3"/><path class="fc-icon-capital" d="M4 20 L22 22 L28 24 L22 26 L4 28 L8 24 Z" fill="currentColor" fill-opacity="0.25"/></svg><span class="label">JUMP NAV</span></span><p>Ruta de saltos con jump drive: elegís origen, destino, nave y skills, y te arma la ruta de cynos parando solo donde podés dockear (estaciones NPC o estructuras a las que tu personaje tiene acceso), mejor en estructuras. Con los años luz y el combustible de cada salto.<span class="mode-for"><svg class="mode-for-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Transportista"><path d="M3 9l9-5 9 5v8l-9 5-9-5z" fill="currentColor" fill-opacity="0.25"/><path d="M3 9l9 5 9-5M12 14v8"/><path d="M7.5 6.5l9 5"/></svg><span><span class="label">IDEAL PARA</span> quien necesita planificar saltos con jump drive: capitales, jump freighters o black ops. Sabés si llegás y dónde dockear antes de prender el primer cyno.</span></span></p></div>
         <div class="row mode-row"><span class="mode-cell"><svg class="fc-mode-icon fc-mode-icon--radio" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="24" y1="20" x2="24" y2="44"/><line x1="16" y1="44" x2="32" y2="44"/><circle cx="24" cy="18" r="2.5" fill="currentColor"/><path class="fc-icon-wave" d="M18 12 a8 8 0 0 0 0 12 M30 12 a8 8 0 0 1 0 12"/><path class="fc-icon-wave fc-icon-wave--2" d="M13 7 a14 14 0 0 0 0 22 M35 7 a14 14 0 0 1 0 22"/><path class="fc-icon-wave fc-icon-wave--3" d="M8 3 a20 20 0 0 0 0 30 M40 3 a20 20 0 0 1 0 30"/></svg><span class="label">RADIO</span></span><p>Radios online para acompañar el rateo. Se corta sola al cambiar de modo o apagar.<span class="mode-for"><svg class="mode-for-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Música"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="17.5" cy="16" r="2.5" fill="currentColor"/><path d="M9 9l11-2"/></svg><span><span class="label">IDEAL PARA</span> todo el mundo, salvo a quien no le guste la buena música. :D</span></span></p></div>
       </div>
     </div>
@@ -727,13 +755,14 @@
     <div class="screen">
       <p>Lo nuevo de cada versión. Centinela se actualiza sola al cerrarla; en ⚙ → Versión ves cuál tenés.</p>
       <div class="rows">
+        <div class="row"><span class="label">0.4.7</span><p><strong>Modo JUMP NAV</strong>: ruta de saltos con jump drive (capitales, jump freighters, black ops) parando solo donde podés dockear, mejor en estructuras, con años luz y combustible de cada salto. Para que vea tus estructuras, cerrá sesión y volvé a entrar una vez en ⚙.</p></div>
         <div class="row"><span class="label">0.4.6</span><p>La <strong>ventanita de alertas</strong> tiene siempre el mismo tamaño, así no salta cuando llega una alerta. En reposo es negra y dice si está vigilando.</p></div>
         <div class="row"><span class="label">0.4.5</span><p><strong>Ventanita de alertas</strong> para quien juega con un solo monitor: el botón ▭ achica Centinela a una ventanita siempre encima del juego que solo se agranda con una alerta. En ⚙ → Versión, link a estas novedades, y después de cada actualización la pantalla avisa qué hay de nuevo. En ⚙ → Apoyo, cómo sumarte a la Tripulación de Honor.</p></div>
-        <div class="row"><span class="label">0.4.4</span><p><strong>Alarmas más fuertes.</strong> Las de intel y kills suenan bastante más; se ajustan en ⚙ → Volumen de alarma, con un botón Probar.</p></div>
       </div>
       <details class="older">
         <summary>Versiones anteriores</summary>
         <div class="rows">
+          <div class="row"><span class="label">0.4.4</span><p><strong>Alarmas más fuertes.</strong> Las de intel y kills suenan bastante más; se ajustan en ⚙ → Volumen de alarma, con un botón Probar.</p></div>
           <div class="row"><span class="label">0.4.3</span><p>Las pestañas de modo son una franja de lado a lado, el LED de ALERTA está en el centro del marco y los botones 💡 y ⚙ más separados.</p></div>
           <div class="row"><span class="label">0.4.2</span><p>La posición elegida de cada perilla se ve en negativo, rellena con el color de tu skin.</p></div>
           <div class="row"><span class="label">0.4.1</span><p>Arreglos del intel: aparecen los retratos de los hostiles, «Fulano +1» cuenta 2, «status?» ya no alarma y los seguimientos sin nombres conservan los pilotos ya reportados.</p></div>
