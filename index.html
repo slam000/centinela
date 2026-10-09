@@ -520,10 +520,12 @@
   html[data-skin="sansha"] { --screen-fg: #cbb0e6; --screen-accent: #c27dff; --screen-glass: #130a1f; }
   html[data-skin="serpentis"] { --screen-fg: #a2dcab; --screen-accent: #4dff88; --screen-glass: #04170a; }
   html[data-skin="triglavian"] { --screen-fg: #dbb08a; --screen-accent: #ff6b3d; --screen-glass: #1c0c05; }
-  .skin-switch { display: flex; gap: 6px; margin-bottom: 4px; }
+  /* Debajo del menú, fuera de la barra fija: en ella quedaba todo muy junto. */
+  .skin-switch { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: -18px; }
+  .skin-switch .label { margin-right: 4px; color: var(--engraved); font-size: 0.7em; }
   .skin-switch button { width: 16px; height: 16px; padding: 0; border-radius: 999px; border: 1px solid #000; background: var(--swatch); cursor: pointer; }
   .skin-switch button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--cabin-bg), 0 0 0 3px var(--swatch), 0 0 8px 2px var(--swatch); }
-  @media (max-width: 520px) { .site-nav { flex-wrap: wrap; row-gap: 6px; padding-top: 8px; } .site-nav .skin-switch { order: -2; margin: 0 auto 0 0; } .site-nav .lang-switch { order: -1; margin: 0; } .site-nav-links { flex-basis: 100%; } .site-nav-links a { letter-spacing: 0.02em; } html { scroll-padding-top: 100px; } }
+  @media (max-width: 520px) { .site-nav { flex-wrap: wrap; row-gap: 6px; padding-top: 8px; } .site-nav .lang-switch { order: -1; width: 100%; justify-content: flex-end; margin: 0; } .site-nav-links { flex-basis: 100%; } .site-nav-links a { letter-spacing: 0.02em; } html { scroll-padding-top: 100px; } }
   html { scroll-padding-top: 64px; }
   .page { display: flex; flex-direction: column; gap: 32px; }
   .pane-download { margin: 0 0 16px; text-align: center; }
@@ -664,12 +666,12 @@
 <main class="wrap" data-tab-group>
   <nav class="site-nav" aria-label="Secciones" data-aria-es="Secciones" data-aria-en="Sections">
     <div class="site-nav-links"><a href="#inicio" data-tab="inicio"><span lang="es">INICIO</span><span lang="en">HOME</span></a><a href="#instalar" data-tab="instalar"><span lang="es">INSTALAR</span><span lang="en">INSTALL</span></a><a href="#manual" data-tab="manual">MANUAL</a><a href="#novedades" data-tab="novedades"><span lang="es">NOVEDADES</span><span lang="en">WHAT'S NEW</span></a><a href="#preguntas" data-tab="preguntas"><span lang="es">PREGUNTAS</span><span lang="en">FAQ</span></a></div>
-    <div class="skin-switch" role="group" aria-label="Skin"><button type="button" data-set-skin="soe" title="Sisters of EVE" aria-label="Sisters of EVE" style="--swatch: #7fe8de"></button><button type="button" data-set-skin="angel-cartel" title="Angel Cartel" aria-label="Angel Cartel" style="--swatch: #ff8c42"></button><button type="button" data-set-skin="blood-raiders" title="Blood Raiders" aria-label="Blood Raiders" style="--swatch: #ff4f63"></button><button type="button" data-set-skin="guristas" title="Guristas" aria-label="Guristas" style="--swatch: #ffcf3a"></button><button type="button" data-set-skin="sansha" title="Sansha's Nation" aria-label="Sansha's Nation" style="--swatch: #c27dff"></button><button type="button" data-set-skin="serpentis" title="Serpentis" aria-label="Serpentis" style="--swatch: #4dff88"></button><button type="button" data-set-skin="triglavian" title="Triglavian Collective" aria-label="Triglavian Collective" style="--swatch: #ff6b3d"></button></div>
     <div class="lang-switch" role="group" aria-label="Idioma / Language">
       <button type="button" data-set-lang="es">ES</button>
       <button type="button" data-set-lang="en">EN</button>
     </div>
   </nav>
+  <div class="skin-switch" role="group" aria-label="Skin"><span class="label">SKIN</span><button type="button" data-set-skin="soe" title="Sisters of EVE" aria-label="Sisters of EVE" style="--swatch: #7fe8de"></button><button type="button" data-set-skin="angel-cartel" title="Angel Cartel" aria-label="Angel Cartel" style="--swatch: #ff8c42"></button><button type="button" data-set-skin="blood-raiders" title="Blood Raiders" aria-label="Blood Raiders" style="--swatch: #ff4f63"></button><button type="button" data-set-skin="guristas" title="Guristas" aria-label="Guristas" style="--swatch: #ffcf3a"></button><button type="button" data-set-skin="sansha" title="Sansha's Nation" aria-label="Sansha's Nation" style="--swatch: #c27dff"></button><button type="button" data-set-skin="serpentis" title="Serpentis" aria-label="Serpentis" style="--swatch: #4dff88"></button><button type="button" data-set-skin="triglavian" title="Triglavian Collective" aria-label="Triglavian Collective" style="--swatch: #ff6b3d"></button></div>
 
   <div class="page" data-panel="inicio" id="inicio">
   <div class="bezel bare">
