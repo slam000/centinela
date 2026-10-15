@@ -632,6 +632,8 @@
   .copy-status { font-size: 0.85em; color: var(--screen-accent); }
   .donate { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
   .donate p { margin: 0; max-width: 62ch; color: var(--text); }
+  .donate.recruit { justify-content: flex-start; }
+  .donate .injector { flex: none; }
   .isk { flex: none; font-family: var(--font-display); font-size: 2.2em; color: var(--warn); }
   /* Panel de donantes: retrato + nombre, sin montos (no es un ranking). Las
      casillas vacías (.honor-empty) se van reemplazando por donantes. */
@@ -1061,6 +1063,10 @@
       <div class="screen donate">
         <p><span lang="es">¿Te salvó la nave alguna alarma? Si Centinela te resulta útil, podés agradecerlo con una donación de ISK a <strong>SLAMes</strong>: abrí su ficha en el juego y elegí <kbd>Give Money</kbd>. Es totalmente voluntario y la app sigue siendo gratis para toda la alianza.</span><span lang="en">Did an alarm ever save your ship? If you find Centinela useful, you can say thanks with an ISK donation to <strong>SLAMes</strong>: open the character’s info in the game and choose <kbd>Give Money</kbd>. It is completely voluntary and the app stays free for the whole alliance.</span></p>
         <span class="isk">o7</span>
+      </div>
+      <div class="screen donate recruit">
+        <img class="injector" src="https://images.evetech.net/types/40520/icon?size=64" alt="" width="48" height="48">
+        <p><span lang="es">¿Vas a crear un alt? Usá el <a href="https://www.eveonline.com/es/signup?invc=f716cbc9-b2f9-4270-b748-d81424af31a7" target="_blank" rel="noreferrer">enlace de reclutamiento ↗</a> y la cuenta nueva arranca con <strong>1.000.000 de skill points</strong> gratis. También vale para una cuenta que ya tenés, si nunca usó un enlace así. A vos no te cuesta nada y, si la cuenta pasa a Omega, CCP le da una recompensa al desarrollador.</span><span lang="en">Making an alt? Use the <a href="https://www.eveonline.com/signup?invc=f716cbc9-b2f9-4270-b748-d81424af31a7" target="_blank" rel="noreferrer">recruitment link ↗</a> and the new account starts with <strong>1,000,000 free skill points</strong>. It also works for an account you already have, if it never used a link like this. It costs you nothing, and if the account goes Omega, CCP gives the developer a reward.</span></p>
       </div>
       <div class="screen">
         <p class="label honor-title" id="tripulacion"><span lang="es">TRIPULACIÓN DE HONOR</span><span lang="en">HONOR CREW</span></p>
