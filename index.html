@@ -635,6 +635,19 @@
   .donate.recruit { justify-content: flex-start; }
   .donate .injector { flex: none; }
   .isk { flex: none; font-family: var(--font-display); font-size: 2.2em; color: var(--warn); }
+  /* ---------- Banner de Planetary Production (la otra herramienta de SLAMes), en todas las páginas ---------- */
+  .pp-banner { display: flex; align-items: center; gap: 20px; }
+  .pp-banner .pp-planet { flex: none; width: 96px; height: 96px; color: var(--screen-accent); }
+  .pp-planet .pp-moon { transform-origin: 48px 48px; animation: pp-orbit 9s linear infinite; }
+  @keyframes pp-orbit { to { transform: rotate(360deg); } }
+  .pp-text { flex: 1; min-width: 0; }
+  .pp-text h3 { margin: 2px 0 6px; font-family: var(--font-display); font-weight: 400; font-size: 1.4em; color: var(--screen-accent); }
+  .pp-text p { margin: 0; color: var(--text); }
+  .pp-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+  .pp-note { font-size: 0.85em; color: var(--screen-fg) !important; }
+  .pp-action { margin-top: 14px !important; }
+  @media (prefers-reduced-motion: reduce) { .pp-planet .pp-moon { animation: none; } }
+  @media (max-width: 600px) { .pp-banner { flex-direction: column; align-items: flex-start; } }
   /* Panel de donantes: retrato + nombre, sin montos (no es un ranking). Las
      casillas vacías (.honor-empty) se van reemplazando por donantes. */
   .screen > .honor-title { margin: 0 0 12px; color: var(--warn); }
@@ -1056,6 +1069,33 @@
     </div>
   </div>
   </div>
+
+  <!-- Fuera de las páginas: se ve en todas, como Apoyo y Sugerencias. -->
+  <aside class="bezel bare" aria-labelledby="pp-title">
+    <div class="bezel-label"><span lang="es">OTRA HERRAMIENTA DE SLAMes</span><span lang="en">ANOTHER TOOL BY SLAMes</span></div>
+    <div class="screen pp-banner">
+      <svg class="pp-planet" viewBox="0 0 96 96" fill="none" stroke="currentColor" aria-hidden="true">
+        <circle cx="48" cy="48" r="22" style="fill: color-mix(in srgb, currentColor 18%, transparent)" stroke-width="2"/>
+        <path d="M30 40c10 4 26 4 36 0M28 52c12 5 28 5 40 0" stroke-width="1.2" opacity="0.6"/>
+        <ellipse cx="48" cy="48" rx="34" ry="8" stroke-width="1.5" opacity="0.7" transform="rotate(-18 48 48)"/>
+        <circle cx="48" cy="48" r="42" stroke-width="1" stroke-dasharray="2 4" opacity="0.35"/>
+        <g class="pp-moon"><circle cx="48" cy="6" r="4" fill="currentColor" stroke="none"/></g>
+      </svg>
+      <div class="pp-text">
+        <span class="label">PLANETARY INTERACTION</span>
+        <h3 id="pp-title">Planetary Production</h3>
+        <p><span lang="es">Planificá y gestioná tus planetas: qué producir en cada uno, cuánto ISK rinde, y aviso cuando un extractor termina o una fábrica se queda sin material. Todos tus personajes en un solo lugar.</span><span lang="en">Plan and manage your planets: what to produce on each one, how much ISK it makes, and a warning when an extractor finishes or a factory runs out of material. All your characters in one place.</span></p>
+        <div class="pp-chips">
+          <span class="chip"><span lang="es">PLANES</span><span lang="en">PLANS</span></span>
+          <span class="chip"><span lang="es">EXTRACTORES</span><span lang="en">EXTRACTORS</span></span>
+          <span class="chip"><span lang="es">ISK POR PLANETA</span><span lang="en">ISK PER PLANET</span></span>
+          <span class="chip"><span lang="es">VARIAS CUENTAS</span><span lang="en">MULTI-ACCOUNT</span></span>
+        </div>
+        <p class="pp-note"><span lang="es">En el navegador, sin instalar nada. Gratis con 3 personajes.</span><span lang="en">In the browser, nothing to install. Free with 3 characters.</span></p>
+        <p class="pp-action"><a class="download" href="https://slam000.github.io/planetary-production/" target="_blank" rel="noreferrer"><span lang="es">CONOCÉ PLANETARY PRODUCTION</span><span lang="en">MEET PLANETARY PRODUCTION</span> ↗</a></p>
+      </div>
+    </div>
+  </aside>
 
   <div class="support-row">
     <div class="bezel bare">
