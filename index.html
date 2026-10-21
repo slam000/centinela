@@ -138,9 +138,8 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background:
-      repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px),
-      radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+    /* Solo la viñeta: sin scanlines, como la app desde 0.4.10 (se lee mejor). */
+    background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
   }
 
   /* ---------- Piezas de pantalla ---------- */
@@ -205,7 +204,6 @@
 
   .strip { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 12px; padding-top: 6px; border-top: 1px solid var(--screen-fg); font-size: 0.9em; }
 
-  .demo { font-size: clamp(0.72rem, 1.6vw, 0.92rem); display: flex; flex-direction: column; gap: 10px; }
   /* Vista de ejemplo: una pestaña por modo, rota sola hasta que se toca una. */
   button.tab { background: none; color: inherit; cursor: pointer; text-shadow: inherit; }
   button.tab[aria-selected="true"] { background: var(--screen-accent); border-color: var(--screen-accent); color: var(--cabin-bg); text-shadow: none; }
@@ -227,6 +225,62 @@
   .chip { padding: 1px 6px; border: 1px solid var(--screen-fg); border-radius: 3px; color: var(--text); font-size: 0.9em; }
   .chip i { font-style: normal; color: var(--screen-accent); }
   .example-note { font-size: 0.75rem; color: var(--engraved); text-align: center; margin: -4px 0 0; }
+
+  /* ---------- Vista de ejemplo = el aparato de la 0.4.10 ----------
+     Copia de FlightComputer.css: placas atornilladas (nombre a la izquierda,
+     modo a la derecha), la cabecera en un display VFD sobre su propia placa
+     y los datos en la pantalla, sin grilla. Si el aparato cambia en la app,
+     cambiarlo acá. El selector de modo va afuera: la app no tiene pestañas. */
+  .demo-wrap { display: flex; flex-direction: column; gap: 12px; }
+  .demo-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px; }
+  .demo-title { font-family: var(--font-display); font-size: 0.8em; letter-spacing: 0.08em; color: var(--engraved); }
+  .demo-tabs { justify-content: flex-end; }
+  .demo-tabs .tab { color: var(--screen-fg); }
+  .device { gap: 0; min-width: 0; }
+  .device .demo-stack, .device .demo-panel, .device .mount, .dscreen { min-width: 0; }
+  .device .demo-panel { gap: 14px; }
+  /* Todos los modos miden lo que el más alto: la pantalla se estira para no dejar hueco. */
+  .device .demo-panel > .mount:last-child { flex: 1; display: flex; flex-direction: column; }
+  .device .demo-panel > .mount:last-child > .dscreen { flex: 1; }
+  .plates { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .nameplate {
+    position: relative; display: inline-flex; align-items: center; padding: 4px 22px; border-radius: 4px;
+    background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px), linear-gradient(#3c4047, #23262b);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.6);
+    font-family: var(--font-display); font-size: clamp(10px, 1.4vw, 13px); letter-spacing: 0.08em; color: #aeb4bc;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+  .screw { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9aa0a8, #3a3e44 70%); box-shadow: 0 0 0 1px #0d0e10; }
+  .screw::after { content: ''; position: absolute; left: 1px; right: 1px; top: 3px; height: 1px; background: #1a1c1f; transform: rotate(35deg); }
+  .nameplate .screw { top: 50%; margin-top: -3.5px; }
+  .screw[data-c="l"] { left: 7px; } .screw[data-c="r"] { right: 7px; }
+  .screw[data-c="tl"] { left: 3px; top: 3px; } .screw[data-c="tr"] { right: 3px; top: 3px; }
+  .screw[data-c="bl"] { left: 3px; bottom: 3px; } .screw[data-c="br"] { right: 3px; bottom: 3px; }
+  .mount {
+    position: relative; padding: 12px; border-radius: 12px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.06), transparent 60%), repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 3px), linear-gradient(#34383e, #1c1f23 55%, #15171a);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 0 rgba(0, 0, 0, 0.6), 0 3px 8px rgba(0, 0, 0, 0.6);
+  }
+  .hdr-display {
+    position: relative; display: flex; align-items: center; min-height: 64px; padding: 8px 16px; overflow: hidden; border-radius: 8px;
+    background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--screen-accent) 10%, var(--screen-glass)) 0%, #020909 85%);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 0 1px #000, 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: var(--screen-accent); font-size: clamp(0.72rem, 1.6vw, 0.92rem);
+    text-shadow: 0 0 4px var(--screen-accent), 0 0 10px color-mix(in srgb, var(--screen-accent) 50%, transparent);
+  }
+  .hdr-display::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.35) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0 1px, transparent 1px 3px); }
+  .hdr-display::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 40%; z-index: 1; pointer-events: none; background: linear-gradient(rgba(255, 255, 255, 0.07), transparent); }
+  .hdr-display .header { width: 100%; flex-wrap: nowrap; align-items: center; padding: 0; border: none; }
+  /* Nombres de sistema en la fuente de datos, como en la app (0/O, 5/S). */
+  .hdr-display .header-title { font-family: var(--font-mono); }
+  .dscreen {
+    position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 10px; border-radius: 10px; padding: clamp(14px, 2.6vw, 24px);
+    background: radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--screen-accent) 14%, var(--screen-glass)) 0%, var(--screen-glass) 55%, #030404 100%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--screen-accent) 25%, transparent), inset 0 0 30px color-mix(in srgb, var(--screen-accent) 18%, transparent), inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 0 1px #000, 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: var(--screen-fg); font-size: clamp(0.72rem, 1.6vw, 0.92rem); text-shadow: 0 0 4px currentColor;
+  }
+  .dscreen::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%); }
+  @media (max-width: 520px) { .plates .nameplate:first-child { display: none; } }
 
   /* ---------- Portada ---------- */
   .hero-screen { display: flex; flex-direction: column; gap: 14px; }
@@ -445,7 +499,7 @@
 }
 
 /* Compu apagada: ⏻ que respira. Rojo fijo de standby (no sigue la skin, igual
-   que la retroiluminación de la perilla de encendido con la compu apagada). */
+   que la perilla de encendido con la compu apagada). */
 .fc-mode-icon--standby {
   color: #ff4d4d;
   animation: fc-icon-breathe 4s ease-in-out infinite;
@@ -677,9 +731,11 @@
   }
   /* ---------- Radio: captura real del sintonizador (site/radio-es.webp, radio-en.webp) ---------- */
   .radio-shot { display: block; width: 100%; height: auto; margin: 12px 0 14px; border-radius: 8px; border: 1px solid #1a1c1f; }
+  .radio-shot.demo-radio { margin: 0; border-radius: 14px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.55); }
 </style>
 </head>
 <body>
+
 <main class="wrap" data-tab-group>
   <nav class="site-nav" aria-label="Secciones" data-aria-es="Secciones" data-aria-en="Sections">
     <div class="site-nav-links"><a href="#inicio" data-tab="inicio"><span lang="es">INICIO</span><span lang="en">HOME</span></a><a href="#instalar" data-tab="instalar"><span lang="es">INSTALAR</span><span lang="en">INSTALL</span></a><a href="#manual" data-tab="manual">MANUAL</a><a href="#novedades" data-tab="novedades"><span lang="es">NOVEDADES</span><span lang="en">WHAT'S NEW</span></a><a href="#preguntas" data-tab="preguntas"><span lang="es">PREGUNTAS</span><span lang="en">FAQ</span></a></div>
@@ -761,7 +817,7 @@
       </div>
       <p><span lang="es">La computadora de a bordo de la alianza. Va en una segunda pantalla mientras jugás y te avisa cuando hay hostiles cerca: lee tus canales de intel, sigue los kills en vivo de tu perímetro y sabe en qué sistema estás apenas saltás.</span><span lang="en">The alliance's onboard flight computer. It runs on a second screen while you play and warns you when hostiles are near: it reads your intel channels, follows live kills around your perimeter and knows which system you're in the moment you jump.</span></p>
       <div class="hero-actions">
-        <a class="download" href="https://github.com/slam000/centinela/releases/latest"><span lang="es">DESCARGAR PARA WINDOWS</span><span lang="en">DOWNLOAD FOR WINDOWS</span> <small>v0.4.9</small></a>
+        <a class="download" href="https://github.com/slam000/centinela/releases/latest"><span lang="es">DESCARGAR PARA WINDOWS</span><span lang="en">DOWNLOAD FOR WINDOWS</span> <small>v0.4.10</small></a>
         <a class="download download--alt" href="https://github.com/slam000/centinela/releases/latest"><span lang="es">LINUX</span><span lang="en">LINUX</span> <small>AppImage</small></a>
         <span class="corp-note"><span lang="es">Hecho por Vanguardia DR para Sigma Grindset</span><span lang="en">Made by Vanguardia DR for Sigma Grindset</span><span class="cursor" aria-hidden="true"></span></span>
       </div>
@@ -775,118 +831,164 @@
     </div>
   </div>
 
-  <div class="bezel" data-tab-group data-demo data-default="demo-monitor" aria-label="Vista de ejemplo de Centinela" data-aria-es="Vista de ejemplo de Centinela" data-aria-en="Example view of Centinela">
-    <div class="bezel-label"><span lang="es">VISTA DE EJEMPLO</span><span lang="en">EXAMPLE VIEW</span></div>
-    <div class="screen demo">
-      <div class="tabs" role="tablist"><button type="button" class="tab" role="tab" data-tab="demo-off">OFF</button><button type="button" class="tab" role="tab" data-tab="demo-monitor">MONITOR</button><button type="button" class="tab" role="tab" data-tab="demo-wh-nav">WH NAV</button><button type="button" class="tab" role="tab" data-tab="demo-radar">RADAR</button><button type="button" class="tab" role="tab" data-tab="demo-jump">JUMP NAV</button></div>
+  <div class="demo-wrap" data-tab-group data-demo data-default="demo-monitor" aria-label="Vista de ejemplo de Centinela" data-aria-es="Vista de ejemplo de Centinela" data-aria-en="Example view of Centinela">
+    <div class="demo-head"><span class="demo-title"><span lang="es">VISTA DE EJEMPLO</span><span lang="en">EXAMPLE VIEW</span></span><div class="tabs demo-tabs" role="tablist"><button type="button" class="tab" role="tab" data-tab="demo-off">OFF</button><button type="button" class="tab" role="tab" data-tab="demo-monitor">MONITOR</button><button type="button" class="tab" role="tab" data-tab="demo-wh-nav">WH NAV</button><button type="button" class="tab" role="tab" data-tab="demo-radar">RADAR</button><button type="button" class="tab" role="tab" data-tab="demo-jump">JUMP NAV</button></div></div>
+    <div class="bezel device">
       <div class="demo-stack">
       <div class="demo-panel" data-panel="demo-off">
-        <div class="header">
-          <div class="head-text">
-            <span class="header-title"><span data-eve-clock>12:00</span></span>
-            <span><span lang="es">en reposo</span><span lang="en">standing by</span></span>
+        <div class="plates"><div class="nameplate"><i class="screw" data-c="l"></i><span lang="es">Centinela — sistema de monitorización</span><span lang="en">Centinela — monitoring system</span><i class="screw" data-c="r"></i></div><div class="nameplate"><i class="screw" data-c="l"></i>OFF<i class="screw" data-c="r"></i></div></div>
+        <div class="mount header-mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="hdr-display">
+            <div class="header">
+              <div class="head-text">
+                <span class="header-title"><span data-eve-clock>12:00</span></span>
+                <span><span lang="es">en reposo</span><span lang="en">standing by</span></span>
+              </div>
+              <svg class="fc-mode-icon fc-mode-icon--planet" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="none" fill="currentColor"><circle class="fc-icon-twinkle" cx="6" cy="8" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="42" cy="5" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--3" cx="43" cy="42" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="5" cy="40" r="1"/></g><g transform="rotate(-20 24 24)"><ellipse cx="24" cy="24" rx="21" ry="6" stroke-width="1.6" stroke-opacity="0.55"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/></circle></g><circle cx="24" cy="24" r="13" fill="#05080a"/><circle cx="24" cy="24" r="13" fill="currentColor" fill-opacity="0.15"/><path d="M15 18 a11 11 0 0 0 2 13" stroke-width="1.4" stroke-opacity="0.7"/><g transform="rotate(-20 24 24)"><path d="M3 24 a21 6 0 0 0 42 0" stroke-width="1.6"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/><animate attributeName="opacity" values="1;0" keyTimes="0;0.5" calcMode="discrete" dur="10s" repeatCount="indefinite"/></circle></g></svg>
+            </div>
           </div>
-          <svg class="fc-mode-icon fc-mode-icon--planet" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="none" fill="currentColor"><circle class="fc-icon-twinkle" cx="6" cy="8" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="42" cy="5" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--3" cx="43" cy="42" r="1"/><circle class="fc-icon-twinkle fc-icon-twinkle--2" cx="5" cy="40" r="1"/></g><g transform="rotate(-20 24 24)"><ellipse cx="24" cy="24" rx="21" ry="6" stroke-width="1.6" stroke-opacity="0.55"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/></circle></g><circle cx="24" cy="24" r="13" fill="#05080a"/><circle cx="24" cy="24" r="13" fill="currentColor" fill-opacity="0.15"/><path d="M15 18 a11 11 0 0 0 2 13" stroke-width="1.4" stroke-opacity="0.7"/><g transform="rotate(-20 24 24)"><path d="M3 24 a21 6 0 0 0 42 0" stroke-width="1.6"/><circle r="2.4" fill="currentColor" stroke="none"><animateMotion dur="10s" repeatCount="indefinite" path="M47 24 a23 9 0 1 1 -46 0 a23 9 0 1 1 46 0"/><animate attributeName="opacity" values="1;0" keyTimes="0;0.5" calcMode="discrete" dur="10s" repeatCount="indefinite"/></circle></g></svg>
         </div>
-        <div class="demo-line"><span lang="es">Bienvenido, SLAMes. Todo tranquilo en el perímetro.</span><span lang="en">Welcome, SLAMes. All quiet on the perimeter.</span><span class="cursor" aria-hidden="true"></span></div>
-        <img class="demo-logo" src="https://images.evetech.net/corporations/98525766/logo?size=128" width="96" height="96" alt="" loading="lazy">
-        <p class="demo-caption"><span lang="es">La pantalla en reposo: hora EVE, un saludo y el logo de tu corp.</span><span lang="en">Standby screen: EVE time, a greeting and your corp logo.</span></p>
+        <div class="mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="dscreen">
+            <div class="demo-line"><span lang="es">Bienvenido, SLAMes. Todo tranquilo en el perímetro.</span><span lang="en">Welcome, SLAMes. All quiet on the perimeter.</span><span class="cursor" aria-hidden="true"></span></div>
+            <img class="demo-logo" src="https://images.evetech.net/corporations/98525766/logo?size=128" width="96" height="96" alt="" loading="lazy">
+            <p class="demo-caption"><span lang="es">La pantalla en reposo: hora EVE, un saludo y el logo de tu corp.</span><span lang="en">Standby screen: EVE time, a greeting and your corp logo.</span></p>
+          </div>
+        </div>
       </div>
       <div class="demo-panel" data-panel="demo-monitor">
-        <div class="header">
-          <div class="head-text">
-            <span class="header-title">Tama <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span>
-            <span>The Citadel</span>
+        <div class="plates"><div class="nameplate"><i class="screw" data-c="l"></i><span lang="es">Centinela — sistema de monitorización</span><span lang="en">Centinela — monitoring system</span><i class="screw" data-c="r"></i></div><div class="nameplate"><i class="screw" data-c="l"></i>MONITOR<i class="screw" data-c="r"></i></div></div>
+        <div class="mount header-mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="hdr-display">
+            <div class="header">
+              <div class="head-text">
+                <span class="header-title">Tama <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span>
+                <span>The Citadel</span>
+              </div>
+              <svg class="fc-mode-icon fc-mode-icon--monitor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="1.5"><line class="fc-icon-star" x1="48" y1="6" x2="52" y2="6"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="12" x2="54" y2="12"/><line class="fc-icon-star fc-icon-star--slow" x1="48" y1="19" x2="50" y2="19"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="38" x2="54" y2="38"/><line class="fc-icon-star" x1="48" y1="43" x2="52" y2="43"/></g><g class="fc-icon-ship"><path class="fc-icon-flame" d="M14 21 L4 24 L14 27"/><path d="M8 14 L30 21 L40 24 L30 27 L8 34 L14 24 Z" fill="currentColor" fill-opacity="0.25"/></g></svg>
+            </div>
           </div>
-          <svg class="fc-mode-icon fc-mode-icon--monitor" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke-width="1.5"><line class="fc-icon-star" x1="48" y1="6" x2="52" y2="6"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="12" x2="54" y2="12"/><line class="fc-icon-star fc-icon-star--slow" x1="48" y1="19" x2="50" y2="19"/><line class="fc-icon-star fc-icon-star--fast" x1="48" y1="38" x2="54" y2="38"/><line class="fc-icon-star" x1="48" y1="43" x2="52" y2="43"/></g><g class="fc-icon-ship"><path class="fc-icon-flame" d="M14 21 L4 24 L14 27"/><path d="M8 14 L30 21 L40 24 L30 27 L8 34 L14 24 Z" fill="currentColor" fill-opacity="0.25"/></g></svg>
         </div>
-        <div class="row"><span><span class="label"><span lang="es">COMBATE 1H</span><span lang="en">COMBAT 1H</span></span></span><span class="value danger">⚠ 3 kill(s) · zKillboard</span></div>
-        <div class="row"><span><span class="label"><span lang="es">ÚLTIMO KILL</span><span lang="en">LAST KILL</span></span></span><span class="value">Astero 4m · 182M ISK <span class="info">info</span></span></div>
-        <div class="label section-label"><span lang="es">PRÓXIMA PUERTA</span><span lang="en">NEXT GATE</span></div>
-        <div class="demo-gate"><strong class="danger"><span lang="es">▲ POSIBLE CAMPEO</span><span lang="en">▲ POSSIBLE GATE CAMP</span></strong> → Nourvukaiken <span class="sec" style="background:#4ECEF8;color:#05080a">0.8</span></div>
-        <div class="demo-gate-side"><span lang="es">acá (puerta en Tama)</span><span lang="en">here (gate in Tama)</span>: <span class="danger">3 kills · <span lang="es">último</span><span lang="en">latest</span> Astero 4m · 182M ISK <span class="info">info</span></span></div>
-        <div class="demo-gate-side"><span lang="es">allá (llegada en Nourvukaiken)</span><span lang="en">there (arrival in Nourvukaiken)</span>: <span lang="es">sin kills (2h)</span><span lang="en">no kills (2h)</span></div>
-        <div class="label section-label"><span lang="es">RUTA → Jita</span><span lang="en">ROUTE → Jita</span></div>
-        <div class="row"><span><span lang="es">salto 1 de 4</span><span lang="en">jump 1 of 4</span></span><span class="value"><span class="info"><span lang="es">ruta</span><span lang="en">route</span></span> <span class="info">✕</span></span></div>
-        <div class="dots demo-route"><span class="dot hot here"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <div class="row"><span><span class="label"><span lang="es">NAVE</span><span lang="en">SHIP</span></span></span><span class="value">Astero</span></div>
-        <div class="label section-label"><span lang="es">PUERTAS</span><span lang="en">GATES</span></div>
-        <div class="row"><span><span class="name">Kedama <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span></span><span class="value danger">⚠ 1 kill(s) · 25m <span class="info">info</span></span></div>
-        <div class="row"><span><span class="name">Nourvukaiken <span class="sec" style="background:#4ECEF8;color:#05080a">0.8</span></span></span><span class="quiet">·</span></div>
-        <div class="row"><span><span class="name">Sujarento <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span></span><span class="quiet">·</span></div>
-        <div class="strip"><span><span class="label">INTEL</span> <span class="value"><span lang="es">intel.canal</span><span lang="en">intel.channel</span></span></span></div>
-        <p class="demo-caption"><span lang="es">Para exploradores: tu sistema, las puertas, tu ruta y si hay campeo en la próxima puerta.</span><span lang="en">For explorers: your system, its gates, your route and whether the next gate is camped.</span></p>
+        <div class="mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="dscreen">
+            <div class="row"><span><span class="label"><span lang="es">COMBATE 1H</span><span lang="en">COMBAT 1H</span></span></span><span class="value danger">⚠ 3 kill(s) · zKillboard</span></div>
+            <div class="row"><span><span class="label"><span lang="es">ÚLTIMO KILL</span><span lang="en">LAST KILL</span></span></span><span class="value">Astero 4m · 182M ISK <span class="info">info</span></span></div>
+            <div class="label section-label"><span lang="es">PRÓXIMA PUERTA</span><span lang="en">NEXT GATE</span></div>
+            <div class="demo-gate"><strong class="danger"><span lang="es">▲ POSIBLE CAMPEO</span><span lang="en">▲ POSSIBLE GATE CAMP</span></strong> → Nourvukaiken <span class="sec" style="background:#4ECEF8;color:#05080a">0.8</span></div>
+            <div class="demo-gate-side"><span lang="es">acá (puerta en Tama)</span><span lang="en">here (gate in Tama)</span>: <span class="danger">3 kills · <span lang="es">último</span><span lang="en">latest</span> Astero 4m · 182M ISK <span class="info">info</span></span></div>
+            <div class="demo-gate-side"><span lang="es">allá (llegada en Nourvukaiken)</span><span lang="en">there (arrival in Nourvukaiken)</span>: <span lang="es">sin kills (2h)</span><span lang="en">no kills (2h)</span></div>
+            <div class="label section-label"><span lang="es">RUTA → Jita</span><span lang="en">ROUTE → Jita</span></div>
+            <div class="row"><span><span lang="es">salto 1 de 4</span><span lang="en">jump 1 of 4</span></span><span class="value"><span class="info"><span lang="es">ruta</span><span lang="en">route</span></span> <span class="info">✕</span></span></div>
+            <div class="dots demo-route"><span class="dot hot here"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="row"><span><span class="label"><span lang="es">NAVE</span><span lang="en">SHIP</span></span></span><span class="value">Astero</span></div>
+            <div class="label section-label"><span lang="es">PUERTAS</span><span lang="en">GATES</span></div>
+            <div class="row"><span><span class="name">Kedama <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span></span><span class="value danger">⚠ 1 kill(s) · 25m <span class="info">info</span></span></div>
+            <div class="row"><span><span class="name">Nourvukaiken <span class="sec" style="background:#4ECEF8;color:#05080a">0.8</span></span></span><span class="quiet">·</span></div>
+            <div class="row"><span><span class="name">Sujarento <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span></span><span class="quiet">·</span></div>
+            <div class="strip"><span><span class="label">INTEL</span> <span class="value"><span lang="es">intel.canal</span><span lang="en">intel.channel</span></span></span></div>
+            <p class="demo-caption"><span lang="es">Para exploradores: tu sistema, las puertas, tu ruta y si hay campeo en la próxima puerta.</span><span lang="en">For explorers: your system, its gates, your route and whether the next gate is camped.</span></p>
+          </div>
+        </div>
       </div>
       <div class="demo-panel" data-panel="demo-wh-nav">
-        <div class="header">
-          <div class="head-text">
-            <span class="header-title">J003382 <span class="sec wh-class">C5</span></span>
-            <span><span lang="es">Púlsar · E-R00024</span><span lang="en">Pulsar · E-R00024</span></span>
+        <div class="plates"><div class="nameplate"><i class="screw" data-c="l"></i><span lang="es">Centinela — sistema de monitorización</span><span lang="en">Centinela — monitoring system</span><i class="screw" data-c="r"></i></div><div class="nameplate"><i class="screw" data-c="l"></i>WH NAV<i class="screw" data-c="r"></i></div></div>
+        <div class="mount header-mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="hdr-display">
+            <div class="header">
+              <div class="head-text">
+                <span class="header-title">J003382 <span class="sec wh-class">C5</span></span>
+                <span><span lang="es">Púlsar · E-R00024</span><span lang="en">Pulsar · E-R00024</span></span>
+              </div>
+              <svg class="fc-mode-icon fc-mode-icon--wh-nav" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-swirl"><path d="M24 24 m0 -4 a4 4 0 1 1 -4 4"/><path d="M24 24 m0 -10 a10 10 0 1 1 -10 10"/><path d="M24 24 m0 -17 a17 17 0 1 1 -17 17"/></g><circle class="fc-icon-swirl-core" cx="24" cy="24" r="2.5" fill="currentColor"/></svg>
+            </div>
           </div>
-          <svg class="fc-mode-icon fc-mode-icon--wh-nav" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-swirl"><path d="M24 24 m0 -4 a4 4 0 1 1 -4 4"/><path d="M24 24 m0 -10 a10 10 0 1 1 -10 10"/><path d="M24 24 m0 -17 a17 17 0 1 1 -17 17"/></g><circle class="fc-icon-swirl-core" cx="24" cy="24" r="2.5" fill="currentColor"/></svg>
         </div>
-        <div class="label section-label">STATIC</div>
-        <div class="row"><span><span class="name">D364 → C2</span></span><span class="value">16h · 1.000M kg · <span lang="es">salto</span><span lang="en">jump</span> 375M</span></div>
-        <div class="row"><span><span class="name">U210 → low sec</span></span><span class="value">24h · 3.000M kg · <span lang="es">salto</span><span lang="en">jump</span> 375M</span></div>
-        <div class="label section-label"><span lang="es">POSIBLES WANDERING</span><span lang="en">POSSIBLE WANDERING</span></div>
-        <div class="chips"><span class="chip">Y790 <i>C1</i></span><span class="chip">M267 <i>C3</i></span><span class="chip">E175 <i>C4</i></span><span class="chip">H296 <i>C5</i></span><span class="chip">V753 <i>C6</i></span><span class="chip">D792 <i>high sec</i></span><span class="chip">C140 <i>low sec</i></span><span class="chip">Z142 <i>null sec</i></span></div>
-        <div class="label section-label"><span lang="es">EFECTOS</span><span lang="en">EFFECTS</span></div>
-        <div class="row"><span><span class="name"><span lang="es">PV del escudo</span><span lang="en">Shield HP</span></span></span><span class="value">+86%</span></div>
-        <div class="row"><span><span class="name"><span lang="es">Radio de firma</span><span lang="en">Signature radius</span></span></span><span class="value">+86%</span></div>
-        <div class="row"><span><span class="name"><span lang="es">Resistencias del blindaje</span><span lang="en">Armor resistances</span></span></span><span class="value">−43%</span></div>
-        <div class="row"><span><span class="name"><span lang="es">Tiempo de recarga del condensador</span><span lang="en">Capacitor recharge time</span></span></span><span class="value">−43%</span></div>
-        <div class="row"><span><span class="name"><span lang="es">Neutralizadores y vampiros</span><span lang="en">Neut & nos amount</span></span></span><span class="value">+86%</span></div>
-        <p class="demo-caption"><span lang="es">Al entrar a un wormhole: clase, statics, wandering posibles y los efectos del fenómeno.</span><span lang="en">When you jump into a wormhole: class, statics, possible wanderings and the phenomenon's effects.</span></p>
+        <div class="mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="dscreen">
+            <div class="label section-label">STATIC</div>
+            <div class="row"><span><span class="name">D364 → C2</span></span><span class="value">16h · 1.000M kg · <span lang="es">salto</span><span lang="en">jump</span> 375M</span></div>
+            <div class="row"><span><span class="name">U210 → low sec</span></span><span class="value">24h · 3.000M kg · <span lang="es">salto</span><span lang="en">jump</span> 375M</span></div>
+            <div class="label section-label"><span lang="es">POSIBLES WANDERING</span><span lang="en">POSSIBLE WANDERING</span></div>
+            <div class="chips"><span class="chip">Y790 <i>C1</i></span><span class="chip">M267 <i>C3</i></span><span class="chip">E175 <i>C4</i></span><span class="chip">H296 <i>C5</i></span><span class="chip">V753 <i>C6</i></span><span class="chip">D792 <i>high sec</i></span><span class="chip">C140 <i>low sec</i></span><span class="chip">Z142 <i>null sec</i></span></div>
+            <div class="label section-label"><span lang="es">EFECTOS</span><span lang="en">EFFECTS</span></div>
+            <div class="row"><span><span class="name"><span lang="es">PV del escudo</span><span lang="en">Shield HP</span></span></span><span class="value">+86%</span></div>
+            <div class="row"><span><span class="name"><span lang="es">Radio de firma</span><span lang="en">Signature radius</span></span></span><span class="value">+86%</span></div>
+            <div class="row"><span><span class="name"><span lang="es">Resistencias del blindaje</span><span lang="en">Armor resistances</span></span></span><span class="value">−43%</span></div>
+            <div class="row"><span><span class="name"><span lang="es">Tiempo de recarga del condensador</span><span lang="en">Capacitor recharge time</span></span></span><span class="value">−43%</span></div>
+            <div class="row"><span><span class="name"><span lang="es">Neutralizadores y vampiros</span><span lang="en">Neut & nos amount</span></span></span><span class="value">+86%</span></div>
+            <p class="demo-caption"><span lang="es">Al entrar a un wormhole: clase, statics, wandering posibles y los efectos del fenómeno.</span><span lang="en">When you jump into a wormhole: class, statics, possible wanderings and the phenomenon's effects.</span></p>
+          </div>
+        </div>
       </div>
       <div class="demo-panel" data-panel="demo-radar">
-        <div class="header">
-          <div class="head-text">
-            <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
-            <span class="danger"><span lang="es">AQUÍ · ▲ intel hace 1m · ⚠ 1 kill(s) 1h</span><span lang="en">HERE · ▲ intel 1m ago · ⚠ 1 kill(s) 1h</span></span>
-          </div>
-          <svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg>
-        </div>
-        <div>
-          <div class="label section-label"><span lang="es">AMENAZAS</span><span lang="en">THREATS</span></div>
-          <div class="row"><span><span class="name"><span lang="es">AQUÍ 1DQ1-A</span><span lang="en">HERE 1DQ1-A</span></span><br><span class="danger"><span lang="es">▲ intel hace 1m · 2 hostiles · por Kaelen Voss</span><span lang="en">▲ intel 1m ago · 2 hostiles · by Kaelen Voss</span></span></span><span class="threat-side"><span class="value danger">1 kill(s) · Sabre 4m · 62M ISK <span class="info">info</span></span><span class="faces"><img class="face" src="https://images.evetech.net/characters/2117964877/portrait?size=64" alt="SLAMes"><span class="face">+1</span></span></span></div>
-          <div class="row"><span><span class="name">2j 8WA-Z6</span><br><span class="danger"><span lang="es">▲ intel hace 2m · 6 hostiles · por Kaelen Voss</span><span lang="en">▲ intel 2m ago · 6 hostiles · by Kaelen Voss</span></span></span><span class="faces"><span class="face">+6</span></span></div>
-        </div>
-        <div>
-          <div class="row"><span class="label"><span lang="es">PERÍMETRO</span><span lang="en">PERIMETER</span></span><span class="value"><span lang="es">4j · 15 sistemas</span><span lang="en">4j · 15 systems</span></span></div>
-          <div class="rings">
-            <div class="ring"><b><span lang="es">AQUÍ</span><span lang="en">HERE</span></b><div class="dots"><span class="dot hot here"></span></div></div>
-            <div class="ring"><b>1j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
-            <div class="ring"><b>2j</b><div class="dots"><span class="dot hot"></span><span class="dot"></span><span class="dot"></span><span class="dot act"></span><span class="dot"></span></div></div>
-            <div class="ring"><b>3j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
-            <div class="ring"><b>4j</b><div class="dots"><span class="dot"></span><span class="dot"></span></div></div>
+        <div class="plates"><div class="nameplate"><i class="screw" data-c="l"></i><span lang="es">Centinela — sistema de monitorización</span><span lang="en">Centinela — monitoring system</span><i class="screw" data-c="r"></i></div><div class="nameplate"><i class="screw" data-c="l"></i>RADAR<i class="screw" data-c="r"></i></div></div>
+        <div class="mount header-mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="hdr-display">
+            <div class="header">
+              <div class="head-text">
+                <span class="header-title">1DQ1-A <span class="sec">-0.4</span></span>
+                <span class="danger"><span lang="es">AQUÍ · ▲ intel hace 1m · ⚠ 1 kill(s) 1h</span><span lang="en">HERE · ▲ intel 1m ago · ⚠ 1 kill(s) 1h</span></span>
+              </div>
+              <svg class="fc-mode-icon fc-mode-icon--rateo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="fc-icon-ship"><path d="M3 13 L20 20 L27 24 L20 28 L3 35 L8 24 Z" fill="currentColor" fill-opacity="0.25"/><line class="fc-icon-thrust" x1="1" y1="24" x2="5" y2="24"/></g><line class="fc-icon-bolt" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><line class="fc-icon-bolt fc-icon-bolt--2" x1="28" y1="24" x2="32" y2="24" stroke-width="2.6"/><path class="fc-icon-rat" d="M41 15 L47 24 L41 33 L35 24 Z"/><circle class="fc-icon-hit" cx="35" cy="24" r="4"/></svg>
+            </div>
           </div>
         </div>
-        <div class="strip"><span><span class="label">INTEL</span> <span class="value"><span lang="es">intel.canal</span><span lang="en">intel.channel</span></span></span><span><span class="label">BOUNTY</span> <span class="value"><span lang="es">48.250.000 ISK</span><span lang="en">48,250,000 ISK</span></span></span></div>
-        <p class="demo-caption"><span lang="es">Para ratear: amenazas y perímetro de hasta 4 saltos, con tu intel y los kills en vivo.</span><span lang="en">For ratting: threats and a perimeter of up to 4 jumps, with your intel and live kills.</span></p>
+        <div class="mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="dscreen">
+            <div>
+              <div class="label section-label"><span lang="es">AMENAZAS</span><span lang="en">THREATS</span></div>
+              <div class="row"><span><span class="name"><span lang="es">AQUÍ 1DQ1-A</span><span lang="en">HERE 1DQ1-A</span></span><br><span class="danger"><span lang="es">▲ intel hace 1m · 2 hostiles · por Kaelen Voss</span><span lang="en">▲ intel 1m ago · 2 hostiles · by Kaelen Voss</span></span></span><span class="threat-side"><span class="value danger">1 kill(s) · Sabre 4m · 62M ISK <span class="info">info</span></span><span class="faces"><img class="face" src="https://images.evetech.net/characters/2117964877/portrait?size=64" alt="SLAMes"><span class="face">+1</span></span></span></div>
+              <div class="row"><span><span class="name">2j 8WA-Z6</span><br><span class="danger"><span lang="es">▲ intel hace 2m · 6 hostiles · por Kaelen Voss</span><span lang="en">▲ intel 2m ago · 6 hostiles · by Kaelen Voss</span></span></span><span class="faces"><span class="face">+6</span></span></div>
+            </div>
+            <div>
+              <div class="row"><span class="label"><span lang="es">PERÍMETRO</span><span lang="en">PERIMETER</span></span><span class="value"><span lang="es">4j · 15 sistemas</span><span lang="en">4j · 15 systems</span></span></div>
+              <div class="rings">
+                <div class="ring"><b><span lang="es">AQUÍ</span><span lang="en">HERE</span></b><div class="dots"><span class="dot hot here"></span></div></div>
+                <div class="ring"><b>1j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+                <div class="ring"><b>2j</b><div class="dots"><span class="dot hot"></span><span class="dot"></span><span class="dot"></span><span class="dot act"></span><span class="dot"></span></div></div>
+                <div class="ring"><b>3j</b><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div></div>
+                <div class="ring"><b>4j</b><div class="dots"><span class="dot"></span><span class="dot"></span></div></div>
+              </div>
+            </div>
+            <div class="strip"><span><span class="label">INTEL</span> <span class="value"><span lang="es">intel.canal</span><span lang="en">intel.channel</span></span></span><span><span class="label">BOUNTY</span> <span class="value"><span lang="es">48.250.000 ISK</span><span lang="en">48,250,000 ISK</span></span></span></div>
+            <p class="demo-caption"><span lang="es">Para ratear: amenazas y perímetro de hasta 4 saltos, con tu intel y los kills en vivo.</span><span lang="en">For ratting: threats and a perimeter of up to 4 jumps, with your intel and live kills.</span></p>
+          </div>
+        </div>
       </div>
       <div class="demo-panel" data-panel="demo-jump">
-        <div class="header">
-          <div class="head-text">
-            <span class="header-title">Ostingele → M-OEE8</span>
-            <span><span lang="es">Rhea · alcance 10,00 LY</span><span lang="en">Rhea · range 10.00 LY</span></span>
+        <div class="plates"><div class="nameplate"><i class="screw" data-c="l"></i><span lang="es">Centinela — sistema de monitorización</span><span lang="en">Centinela — monitoring system</span><i class="screw" data-c="r"></i></div><div class="nameplate"><i class="screw" data-c="l"></i>JUMP NAV<i class="screw" data-c="r"></i></div></div>
+        <div class="mount header-mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="hdr-display">
+            <div class="header">
+              <div class="head-text">
+                <span class="header-title">Ostingele → M-OEE8</span>
+                <span><span lang="es">Rhea · alcance 10,00 LY</span><span lang="en">Rhea · range 10.00 LY</span></span>
+              </div>
+              <svg class="fc-mode-icon fc-mode-icon--jump" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line class="fc-icon-cyno" x1="36" y1="4" x2="36" y2="40" stroke-width="3"/><ellipse class="fc-icon-cyno-ring" cx="36" cy="40" rx="9" ry="3"/><path class="fc-icon-capital" d="M4 20 L22 22 L28 24 L22 26 L4 28 L8 24 Z" fill="currentColor" fill-opacity="0.25"/></svg>
+            </div>
           </div>
-          <svg class="fc-mode-icon fc-mode-icon--jump" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line class="fc-icon-cyno" x1="36" y1="4" x2="36" y2="40" stroke-width="3"/><ellipse class="fc-icon-cyno-ring" cx="36" cy="40" rx="9" ry="3"/><path class="fc-icon-capital" d="M4 20 L22 22 L28 24 L22 26 L4 28 L8 24 Z" fill="currentColor" fill-opacity="0.25"/></svg>
         </div>
-        <div class="row"><span><span class="label"><span lang="es">DIRECTO</span><span lang="en">DIRECT</span></span></span><span class="value"><span lang="es">19,31 LY</span><span lang="en">19.31 LY</span></span></div>
-        <div class="row"><span><span class="label"><span lang="es">ESTRUCTURAS</span><span lang="en">STRUCTURES</span></span></span><span class="value"><span lang="es">paradas verificadas (6 sistemas consultados)</span><span lang="en">stops checked (6 systems checked)</span></span></div>
-        <div class="row"><span><span class="label"><span lang="es">RUTA</span><span lang="en">ROUTE</span></span></span><span class="value"><span lang="es">3 saltos · 19,77 LY · 49.421 Nitrogen</span><span lang="en">3 jumps · 19.77 LY · 49,421 Nitrogen</span></span></div>
-        <div class="label section-label"><span lang="es">TRAMOS</span><span lang="en">LEGS</span></div>
-        <div class="row demo-leg"><span class="name">1 · Vey <span class="sec" style="background:#BB1116;color:#fff">0.2</span></span><span class="value"><span lang="es">2,83 LY · 7.069</span><span lang="en">2.83 LY · 7,069</span> <span class="info"><span lang="es">otras</span><span lang="en">others</span></span></span></div>
-        <div class="demo-dock">DOCK · <span lang="es">3 estaciones NPC</span><span lang="en">3 NPC stations</span></div>
-        <div class="row demo-leg"><span class="name">2 · Teskanen <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span><span class="value"><span lang="es">9,82 LY · 24.550</span><span lang="en">9.82 LY · 24,550</span> <span class="info"><span lang="es">otras</span><span lang="en">others</span></span></span></div>
-        <div class="demo-dock">DOCK · <span lang="es">estación NPC</span><span lang="en">NPC station</span></div>
-        <div class="row demo-leg"><span class="name">3 · M-OEE8 <span class="sec">-0.2</span></span><span class="value"><span lang="es">7,12 LY · 17.802</span><span lang="en">7.12 LY · 17,802</span></span></div>
-        <div class="demo-dock">DOCK · Fortizar «M-OEE8 - Staging»</div>
-        <div class="demo-line"><span lang="es">Cada parada necesita un cyno.</span><span lang="en">Each stop needs a cyno.</span></div>
-        <p class="demo-caption"><span lang="es">Para capitales y jump freighters: ruta de saltos parando solo donde podés dockear.</span><span lang="en">For capitals and jump freighters: a jump route that only stops where you can dock.</span></p>
+        <div class="mount"><i class="screw" data-c="tl"></i><i class="screw" data-c="tr"></i><i class="screw" data-c="bl"></i><i class="screw" data-c="br"></i>
+          <div class="dscreen">
+            <div class="row"><span><span class="label"><span lang="es">DIRECTO</span><span lang="en">DIRECT</span></span></span><span class="value"><span lang="es">19,31 LY</span><span lang="en">19.31 LY</span></span></div>
+            <div class="row"><span><span class="label"><span lang="es">ESTRUCTURAS</span><span lang="en">STRUCTURES</span></span></span><span class="value"><span lang="es">paradas verificadas (6 sistemas consultados)</span><span lang="en">stops checked (6 systems checked)</span></span></div>
+            <div class="row"><span><span class="label"><span lang="es">RUTA</span><span lang="en">ROUTE</span></span></span><span class="value"><span lang="es">3 saltos · 19,77 LY · 49.421 Nitrogen</span><span lang="en">3 jumps · 19.77 LY · 49,421 Nitrogen</span></span></div>
+            <div class="label section-label"><span lang="es">TRAMOS</span><span lang="en">LEGS</span></div>
+            <div class="row demo-leg"><span class="name">1 · Vey <span class="sec" style="background:#BB1116;color:#fff">0.2</span></span><span class="value"><span lang="es">2,83 LY · 7.069</span><span lang="en">2.83 LY · 7,069</span> <span class="info"><span lang="es">otras</span><span lang="en">others</span></span></span></div>
+            <div class="demo-dock">DOCK · <span lang="es">3 estaciones NPC</span><span lang="en">3 NPC stations</span></div>
+            <div class="row demo-leg"><span class="name">2 · Teskanen <span class="sec" style="background:#CE440F;color:#fff">0.3</span></span><span class="value"><span lang="es">9,82 LY · 24.550</span><span lang="en">9.82 LY · 24,550</span> <span class="info"><span lang="es">otras</span><span lang="en">others</span></span></span></div>
+            <div class="demo-dock">DOCK · <span lang="es">estación NPC</span><span lang="en">NPC station</span></div>
+            <div class="row demo-leg"><span class="name">3 · M-OEE8 <span class="sec">-0.2</span></span><span class="value"><span lang="es">7,12 LY · 17.802</span><span lang="en">7.12 LY · 17,802</span></span></div>
+            <div class="demo-dock">DOCK · Fortizar «M-OEE8 - Staging»</div>
+            <div class="demo-line"><span lang="es">Cada parada necesita un cyno.</span><span lang="en">Each stop needs a cyno.</span></div>
+            <p class="demo-caption"><span lang="es">Para capitales y jump freighters: ruta de saltos parando solo donde podés dockear.</span><span lang="en">For capitals and jump freighters: a jump route that only stops where you can dock.</span></p>
+          </div>
+        </div>
       </div>
       </div>
     </div>
+    <img class="radio-shot demo-radio" lang="es" src="radio-es.webp" width="1440" height="762" loading="lazy" alt="Debajo de la computadora, la consola de la radio con el estilo Amplificador">
+    <img class="radio-shot demo-radio" lang="en" src="radio-en.webp" width="1440" height="762" loading="lazy" alt="Under the computer, the radio console in the Amplifier style">
     <p class="example-note"><span lang="es">Los sistemas, pilotos y cifras de esta vista son ilustrativos.</span><span lang="en">The systems, pilots and figures in this view are for illustration only.</span></p>
   </div>
   </div>
@@ -898,7 +1000,7 @@
       <div data-tab-group data-default-os>
         <div class="pill-tabs" role="tablist"><button type="button" role="tab" data-tab="windows">WINDOWS</button><button type="button" role="tab" data-tab="linux">LINUX</button></div>
         <div data-panel="windows" id="windows">
-          <p class="pane-download"><a class="download" href="https://github.com/slam000/centinela/releases/latest"><span lang="es">DESCARGAR PARA WINDOWS</span><span lang="en">DOWNLOAD FOR WINDOWS</span> <small>v0.4.9</small></a></p>
+          <p class="pane-download"><a class="download" href="https://github.com/slam000/centinela/releases/latest"><span lang="es">DESCARGAR PARA WINDOWS</span><span lang="en">DOWNLOAD FOR WINDOWS</span> <small>v0.4.10</small></a></p>
           <ol class="steps rows">
             <li class="row"><p><span lang="es">Descargá el instalador con el botón de arriba y ejecutalo.</span><span lang="en">Download the installer with the button above and run it.</span></p></li>
             <li class="row"><p><span lang="es">Windows va a mostrar «Windows protegió su PC» porque el instalador no está firmado. Tocá <kbd>Más información</kbd> y después <kbd>Ejecutar de todas formas</kbd>.</span><span lang="en">Windows will show “Windows protected your PC” because the installer isn’t signed. Click <kbd>More info</kbd> and then <kbd>Run anyway</kbd>.</span></p></li>
@@ -957,22 +1059,18 @@
             <p><span lang="es">Todo se maneja desde la barra de abajo del monitor, como en un tablero de nave: la pantalla es solo para leer.</span><span lang="en">Everything is operated from the bar below the monitor, like a ship's console: the screen is read-only.</span></p>
             <div class="rows">
               <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="label"><span lang="es">ENCENDIDO</span><span lang="en">POWER</span></span></span><p><span lang="es">Prende y apaga la computadora, con su secuencia de arranque y de apagado. También con la rueda del mouse encima: hacia arriba enciende, hacia abajo apaga.</span><span lang="en">Turns the computer on and off, with its boot and shutdown sequence. Also with the mouse wheel over it: up turns it on, down turns it off.</span></p></div>
-              <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="label"><span lang="es">MODO</span><span lang="en">MODE</span></span></span><p><span lang="es">Cambia de modo con cada giro, o con la rueda del mouse encima. El modo activo se ve en negativo. Solo gira con la sesión iniciada y siendo de Sigma Grindset.</span><span lang="en">Changes mode with each turn, or with the mouse wheel over it. The active mode is shown highlighted. It only turns when you're logged in and in Sigma Grindset.</span></p></div>
+              <div class="row mode-row"><span class="ctrl-cell"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="label"><span lang="es">MODO</span><span lang="en">MODE</span></span></span><p><span lang="es">Cambia de modo con cada giro, o con la rueda del mouse encima. El modo activo se ve en negativo junto a la perilla y en la placa de arriba a la derecha. Solo gira con la sesión iniciada y siendo de Sigma Grindset.</span><span lang="en">Changes mode with each turn, or with the mouse wheel over it. The active mode is shown highlighted next to the knob and on the top-right nameplate. It only turns when you're logged in and in Sigma Grindset.</span></p></div>
               <div class="row mode-row"><span class="ctrl-cell"><span class="led g"></span><span class="label"><span lang="es">ALERTA</span><span lang="en">ALERT</span></span></span><p><span lang="es">Verde parpadeando: está escuchando tus canales de intel. Amarillo, rojo o rojo estroboscópico: hay una alerta (ver <a href="#alertas">Alertas</a>). Apagado: no está vigilando.</span><span lang="en">Blinking green: listening to your intel channels. Yellow, red or strobing red: there is an alert (see <a href="#alertas">Alerts</a>). Off: not watching.</span></p></div>
               <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">▭</span><span class="label"><span lang="es">VENTANITA</span><span lang="en">ALERT PILL</span></span></span><p><span lang="es">Achica Centinela a una ventanita siempre encima del juego, para quien juega con un solo monitor (ver <a href="#alertas">Alertas</a>).</span><span lang="en">Shrinks Centinela to a small always-on-top window over the game, for single-monitor players (see <a href="#alertas">Alerts</a>).</span></p></div>
-              <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><line x1="5" y1="7" x2="13" y2="1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="13" cy="1.5" r="1" fill="currentColor"/><rect x="1.5" y="6.5" width="17" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="6.5" cy="11.5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="6.5" cy="11.5" r="0.9" fill="currentColor"/><rect x="11" y="9" width="5.5" height="2.5" rx="0.5" fill="currentColor"/><line x1="11" y1="14" x2="16.5" y2="14" stroke="currentColor" stroke-width="1.2"/></svg></span><span class="label">RADIO</span></span><p><span lang="es">Abre el sintonizador encima de la pantalla, desde cualquier modo: dial con aguja, VU meters que se mueven con la música, 9 emisoras espaciales y el top de EE.UU. Seis memorias (M1–M6) como la radio de un auto: mantené apretada una para guardar la que suena. Al cerrarlo sigue sonando mientras jugás; baja sola cuando suena una alarma. El puntito verde indica que está sonando. Cómo se usa, en <a href="#radio">Radio</a>.</span><span lang="en">Opens the tuner over the screen, from any mode: a dial with a needle, VU meters that move with the music, 9 space stations and the US top charts. Six presets (M1–M6) like a car radio: press and hold one to save the station playing. Close it and it keeps playing while you fly; it ducks on its own when an alarm sounds. The little green light means it's playing. How to use it: see <a href="#radio">Radio</a>.</span></p></div>
-              <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true"><svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M10 2.5 a5.5 5.5 0 0 1 3.4 9.8 c-.6.5-.9 1.1-.9 1.8 v.6 h-5 v-.6 c0-.7-.3-1.3-.9-1.8 A5.5 5.5 0 0 1 10 2.5 z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><line x1="7.8" y1="16.3" x2="12.2" y2="16.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="8.6" y1="18.3" x2="11.4" y2="18.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8.6 9.5 l1.4 1.6 1.4-1.6" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label"><span lang="es">LUZ</span><span lang="en">LIGHT</span></span></span><p><span lang="es">Retroilumina los controles para usarlos a oscuras, como la luz de una cabina. El puntito verde indica que está prendida.</span><span lang="en">Backlights the controls so you can use them in the dark, like a cockpit light. The little green light means it's on.</span></p></div>
-              <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">⚙</span><span class="label"><span lang="es">AJUSTES</span><span lang="en">SETTINGS</span></span></span><p><span lang="es">Iniciar sesión con EVE, skin de facción, voz, perímetro de RADAR, canales de intel, versión (con las novedades), apoyo y sugerencias. Un puntito azul avisa que hay una actualización lista.</span><span lang="en">EVE login, faction skin, voice, RADAR perimeter, intel channels, version (with the changelog), support and feedback. A little blue light means an update is ready.</span></p></div>
+              <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn" aria-hidden="true">⚙</span><span class="label"><span lang="es">AJUSTES</span><span lang="en">SETTINGS</span></span></span><p><span lang="es">Iniciar sesión con EVE, skin de facción, marco (según la raza de tu personaje), voz, perímetro de RADAR, canales de intel, versión (con las novedades), apoyo y sugerencias. Un puntito azul avisa que hay una actualización lista.</span><span lang="en">EVE login, faction skin, frame (based on your character's race), voice, RADAR perimeter, intel channels, version (with the changelog), support and feedback. A little blue light means an update is ready.</span></p></div>
               <div class="row mode-row"><span class="ctrl-cell"><span class="round-btn quit-btn" aria-hidden="true"><svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="M10 2.5 L17 10.5 H3 Z" fill="currentColor"/><rect x="3" y="13" width="14" height="3" rx="0.8" fill="currentColor"/></svg></span><span class="label"><span lang="es">SALIR</span><span lang="en">QUIT</span></span></span><p><span lang="es">Cierra Centinela. Tocalo dos veces: el primer toque lo enciende en rojo y pregunta “¿SALIR?”, así no se cierra sin querer.</span><span lang="en">Closes Centinela. Press it twice: the first press lights it red and asks “QUIT?”, so it never closes by accident.</span></p></div>
             </div>
-            <div class="controls" role="img" aria-label="Barra de controles de Centinela: encendido en ON, modo en RADAR, LED de alerta escuchando, radio, luz y ajustes" data-aria-es="Barra de controles de Centinela: encendido en ON, modo en RADAR, LED de alerta escuchando, radio, luz y ajustes" data-aria-en="Centinela control bar: power ON, mode on RADAR, alert LED listening, radio, light and settings">
+            <div class="controls" role="img" aria-label="Barra de controles de Centinela: encendido en ON, modo en RADAR, LED de alerta escuchando, ventanita, ajustes y salir" data-aria-es="Barra de controles de Centinela: encendido en ON, modo en RADAR, LED de alerta escuchando, ventanita, ajustes y salir" data-aria-en="Centinela control bar: power ON, mode on RADAR, alert LED listening, alert pill, settings and quit">
             <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(79deg)"></i></span><span class="knob-labels"><span class="on">ON</span><span>OFF</span></span></div>
             <div class="selector"><span class="knob" aria-hidden="true"><i style="transform: rotate(112deg)"></i></span><span class="knob-labels"><span>OFF</span><span>MONITOR</span><span>WH NAV</span><span class="on">RADAR</span><span>JUMP NAV</span></span></div>
             <div class="controls-right">
               <span class="alert-led-group"><span class="led g"></span><b><span lang="es">ALERTA</span><span lang="en">ALERT</span></b></span>
               <span class="round-btn">▭</span>
-              <span class="round-btn"><svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true"><line x1="5" y1="7" x2="13" y2="1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="13" cy="1.5" r="1" fill="currentColor"/><rect x="1.5" y="6.5" width="17" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="6.5" cy="11.5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="6.5" cy="11.5" r="0.9" fill="currentColor"/><rect x="11" y="9" width="5.5" height="2.5" rx="0.5" fill="currentColor"/><line x1="11" y1="14" x2="16.5" y2="14" stroke="currentColor" stroke-width="1.2"/></svg><span class="pilot-led"></span></span>
-              <span class="round-btn"><svg viewBox="0 0 20 20" width="22" height="22" aria-hidden="true"><path d="M10 2.5 a5.5 5.5 0 0 1 3.4 9.8 c-.6.5-.9 1.1-.9 1.8 v.6 h-5 v-.6 c0-.7-.3-1.3-.9-1.8 A5.5 5.5 0 0 1 10 2.5 z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><line x1="7.8" y1="16.3" x2="12.2" y2="16.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="8.6" y1="18.3" x2="11.4" y2="18.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8.6 9.5 l1.4 1.6 1.4-1.6" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="pilot-led"></span></span>
               <span class="round-btn">⚙</span>
               <span class="round-btn quit-btn"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 2.5 L17 10.5 H3 Z" fill="currentColor"/><rect x="3" y="13" width="14" height="3" rx="0.8" fill="currentColor"/></svg></span>
             </div>
@@ -1000,19 +1098,19 @@
             <p><span lang="es"><strong>¿Jugás con un solo monitor?</strong> Tocá el botón ▭ de la barra y Centinela se achica a una ventanita siempre encima del juego. En reposo muestra solo el LED; con una alerta se agranda unos segundos con el color de la gravedad y dónde es («1j HY-RWO · 5 hostiles»). El botón de la ventanita la vuelve a agrandar, y si tenés la radio puesta, el botón de la nota la pausa o la vuelve a poner. Jugá en ventana o en <kbd>Fixed Window</kbd>: en pantalla completa el juego la tapa.</span><span lang="en"><strong>Playing on a single monitor?</strong> Press the ▭ button on the bar and Centinela shrinks to a small always-on-top window over the game. At rest it only shows the LED; with an alert it takes on the severity color for a few seconds and says where («1j HY-RWO · 5 hostiles»). The window button brings it back to full size, and if the radio is on, the music note button pauses or resumes it. Play in windowed or <kbd>Fixed Window</kbd> mode: in fullscreen the game covers it.</span></p>
         </div>
         <div data-panel="radio" id="radio">
-            <p><span lang="es">Un receptor hi-fi de los 70 dentro de Centinela, para escuchar música mientras jugás. Se abre con el botón de la radio del marco, desde cualquier modo, y al cerrarlo sigue sonando.</span><span lang="en">A 70s hi-fi receiver inside Centinela, for music while you play. Open it with the radio button on the frame, from any mode; close it and it keeps playing.</span></p>
-            <img class="radio-shot" lang="es" src="radio-es.webp" width="1280" height="800" loading="lazy" alt="La radio de Centinela: dial con aguja, dos VU meters, display con la emisora que suena y abajo SINTONÍA, ⏻, memorias M1 a M6, LISTA y VOLUMEN">
-            <img class="radio-shot" lang="en" src="radio-en.webp" width="1280" height="800" loading="lazy" alt="Centinela's radio: dial with needle, two VU meters, a display with the station playing and, below, TUNING, ⏻, presets M1 to M6, LIST and VOLUME">
+            <p><span lang="es">Una consola de radio aparte, siempre a la vista debajo de la computadora, para escuchar música mientras jugás. Suena con la compu encendida y sigue sonando en todos los modos. En ⚙ → Radio elegís su estilo: <strong>Amplificador</strong> (el de fábrica, el de la imagen), <strong>Hi-fi · Válvulas</strong> o <strong>Hi-fi</strong>. Los botones son los mismos en los tres.</span><span lang="en">A separate radio console, always in view under the computer, for music while you play. It plays while the computer is on and keeps playing in every mode. In ⚙ → Radio you pick its style: <strong>Amplifier</strong> (the default, shown here), <strong>Hi-fi · Tubes</strong> or <strong>Hi-fi</strong>. The controls are the same in all three.</span></p>
+            <img class="radio-shot" lang="es" src="radio-es.webp" width="1440" height="762" loading="lazy" alt="La radio de Centinela con el estilo Amplificador: dial, válvulas encendidas, ojos mágicos verdes, display con la emisora que suena y abajo SINTONÍA, ⏻, memorias M1 a M6, LISTA y VOLUMEN">
+            <img class="radio-shot" lang="en" src="radio-en.webp" width="1440" height="762" loading="lazy" alt="Centinela's radio in the Amplifier style: dial, glowing tubes, green magic eyes, a display with the station playing and, below, TUNING, ⏻, presets M1 to M6, LIST and VOLUME">
             <div class="rows">
-              <div class="row"><span class="label"><span lang="es">SINTONÍA</span><span lang="en">TUNING</span></span><p><span lang="es">Un clic pasa a la emisora siguiente. Con la rueda del mouse encima, siguiente o anterior. La aguja roja del dial se desliza hasta la que suena.</span><span lang="en">One click moves to the next station. With the mouse wheel over it, next or previous. The red dial needle slides to the station playing.</span></p></div>
+              <div class="row"><span class="label"><span lang="es">SINTONÍA</span><span lang="en">TUNING</span></span><p><span lang="es">Un clic pasa a la emisora siguiente. Con la rueda del mouse encima, siguiente o anterior. La aguja del dial se desliza hasta la que suena y cada emisora que cruza destella.</span><span lang="en">One click moves to the next station. With the mouse wheel over it, next or previous. The dial needle slides to the station playing, and every station it crosses flashes.</span></p></div>
               <div class="row"><span class="label"><span lang="es">VOLUMEN</span><span lang="en">VOLUME</span></span><p><span lang="es">Rueda del mouse encima, o arrastrar hacia arriba o abajo. Un clic apaga o prende la música, como la radio de un auto.</span><span lang="en">Mouse wheel over it, or drag up or down. One click turns the music off or on, like a car radio.</span></p></div>
-              <div class="row"><span class="label">⏻</span><p><span lang="es">Apaga o prende la música. Mientras suena, el símbolo brilla; apagada, la luz ámbar del frente baja y queda en reposo.</span><span lang="en">Turns the music off or on. While it plays the symbol glows; when it's off, the amber front light dims to standby.</span></p></div>
-              <div class="row"><span class="label">M1–M6</span><p><span lang="es">Memorias, como la radio de un auto: un clic pone la emisora guardada; mantené apretada una tecla un momento para guardar ahí la que está sonando. Vienen 6 emisoras espaciales de fábrica.</span><span lang="en">Presets, like a car radio: one click plays the saved station; press and hold a key for a moment to save the station playing there. Six space stations come preset.</span></p></div>
-              <div class="row"><span class="label"><span lang="es">LISTA</span><span lang="en">LIST</span></span><p><span lang="es">Muestra todas las emisoras en lugar de los VU: primero las espaciales y después el top de EE.UU. Tocá una para ponerla.</span><span lang="en">Shows every station in place of the VU meters: the space stations first, then the US top charts. Tap one to play it.</span></p></div>
+              <div class="row"><span class="label">⏻</span><p><span lang="es">Apaga o prende la música; mientras suena, se ilumina.</span><span lang="en">Turns the music off or on; it lights up while playing.</span></p></div>
+              <div class="row"><span class="label">M1–M6</span><p><span lang="es">Memorias, como la radio de un auto: un clic pone la emisora guardada; mantené apretado un botón un momento para guardar ahí la que está sonando. Vienen 6 emisoras espaciales de fábrica.</span><span lang="en">Presets, like a car radio: one click plays the saved station; press and hold a button for a moment to save the station playing there. Six space stations come preset.</span></p></div>
+              <div class="row"><span class="label"><span lang="es">LISTA</span><span lang="en">LIST</span></span><p><span lang="es">Muestra todas las emisoras en la pantalla de la computadora: primero las espaciales, después las bandas sonoras y al final el top de EE.UU. Tocá una para ponerla.</span><span lang="en">Shows every station on the computer's screen: the space stations first, then the soundtracks, then the US top charts. Tap one to play it.</span></p></div>
               <div class="row"><span class="label">DISPLAY</span><p><span lang="es">Dice qué suena. Tocarlo también apaga o prende la música.</span><span lang="en">Shows what's playing. Tapping it also turns the music off or on.</span></p></div>
-              <div class="row"><span class="label">VU</span><p><span lang="es">Se mueven con el nivel real de la música. En algunas emisoras del top no se puede leer el nivel y se mueven con una animación.</span><span lang="en">They follow the music's real level. On some top-chart stations the level can't be read, so they move with an animation.</span></p></div>
+              <div class="row"><span class="label"><span lang="es">LUCES</span><span lang="en">LIGHTS</span></span><p><span lang="es">Siguen a la música: en el Amplificador, el brillo de las válvulas, las descargas con cada golpe de bajo y los ojos mágicos, que se cierran con el nivel de cada canal; en los Hi-fi, los VU o el ojo mágico. En algunas emisoras del top no se puede leer el nivel y se mueven con una animación.</span><span lang="en">They follow the music: on the Amplifier, the tubes' glow, the sparks on every bass hit and the magic eyes, which close with each channel's level; on the Hi-fi styles, the VU meters or the magic eye. On some top-chart stations the level can't be read, so they move with an animation.</span></p></div>
             </div>
-            <p><span lang="es">La música sigue sonando aunque cierres la radio o cambies de modo, y baja sola mientras suena una alarma. Se corta al apagar la compu. Con la ventanita de alertas, el botón de la nota la pausa sin volver a agrandar Centinela.</span><span lang="en">The music keeps playing when you close the radio or switch modes, and it ducks on its own while an alarm sounds. It stops when you power the computer off. With the alert pill, the note button pauses it without bringing Centinela back.</span></p>
+            <p><span lang="es">La música baja sola mientras suena una alarma y se corta al apagar la compu. Con la ventanita de alertas, el botón de la nota la pausa sin volver a agrandar Centinela.</span><span lang="en">The music ducks on its own while an alarm sounds and stops when you power the computer off. With the alert pill, the note button pauses it without bringing Centinela back.</span></p>
         </div>
         <div data-panel="intel" id="intel">
             <ol class="steps rows">
@@ -1033,11 +1131,12 @@
     <div class="screen">
       <p><span lang="es">Lo nuevo de cada versión. Centinela se actualiza sola al cerrarla; en ⚙ → Versión ves cuál tenés.</span><span lang="en">What's new in each version. Centinela updates itself when you close it; ⚙ → Version shows which one you have.</span></p>
       <div class="rows">
-        <div class="row"><span class="label">0.4.9</span><p><span lang="es"><strong>Botón SALIR a la vista</strong>: ahora está en el marco, a la derecha de ⚙ (antes estaba escondido al final de ⚙). Tocalo dos veces para cerrar Centinela.</span><span lang="en"><strong>QUIT button in plain sight</strong>: it now sits on the frame, right of ⚙ (it used to be hidden at the bottom of ⚙). Press it twice to close Centinela.</span></p></div>
+        <div class="row"><span class="label">0.4.10</span><p><span lang="es"><strong>Nueva radio</strong>: ahora es una consola aparte, siempre a la vista debajo de la computadora, con tres estilos en ⚙ → Radio. El de fábrica es un <strong>amplificador a válvulas</strong> que se ilumina con la música. Más emisoras (Dark Zone, Sonic Universe y bandas sonoras de juegos y películas). <strong>Nuevo frente</strong>: placas atornilladas, la cabecera de cada modo en un display propio y los datos más nítidos; el modo activo se ve en una placa, sin pestañas, y el marco ya no lleva los botones de luz y de radio (la radio tiene los suyos). Todo se achica solo para entrar en pantallas chicas. <strong>Marco de tu raza</strong>: el aparato toma el estilo de tu personaje (Amarr, Caldari, Gallente o Minmatar), con su nave en relieve; se cambia en ⚙ → Marco. Arreglado: ⚙ → Tripulación de Honor y Sugerencias no se abrían con la radio abierta, y lo de la pantalla ya no se dibuja encima de una alerta. En ⚙ → Apoyo, enlace para invitar amigos a EVE.</span><span lang="en"><strong>New radio</strong>: now a separate console, always in view under the computer, with three styles in ⚙ → Radio. The default is a <strong>tube amplifier</strong> that lights up with the music. More stations (Dark Zone, Sonic Universe and game and film soundtracks). <strong>New front</strong>: screwed metal plates, each mode's header on its own display and crisper data; the active mode shows on a nameplate, no more tabs, and the frame drops the light and radio buttons (the radio has its own). Everything shrinks on its own to fit small screens. <strong>Your race's frame</strong>: the device takes your character's style (Amarr, Caldari, Gallente or Minmatar), with its ship in relief; change it in ⚙ → Frame. Fixed: ⚙ → Honor Crew and Feedback didn't open with the radio open, and screen content no longer draws over an alert. In ⚙ → Support, a link to invite friends to EVE.</span></p></div>
       </div>
       <details class="older">
         <summary><span lang="es">Versiones anteriores</span><span lang="en">Older versions</span></summary>
         <div class="rows">
+          <div class="row"><span class="label">0.4.9</span><p><span lang="es"><strong>Botón SALIR a la vista</strong>: ahora está en el marco, a la derecha de ⚙ (antes estaba escondido al final de ⚙). Tocalo dos veces para cerrar Centinela.</span><span lang="en"><strong>QUIT button in plain sight</strong>: it now sits on the frame, right of ⚙ (it used to be hidden at the bottom of ⚙). Press it twice to close Centinela.</span></p></div>
           <div class="row"><span class="label">0.4.8</span><p><span lang="es"><strong>Abierta a toda la alianza Sigma Grindset</strong>, y ahora <strong>en inglés</strong> (⚙ → Idioma). <strong>MONITOR para exploradores</strong>: planificá una ruta (también por Ansiblex) y mandala al juego; avisa de posibles campeos en la próxima puerta y escucha tu intel. <strong>Radio nueva</strong>: botón propio en el marco con un sintonizador retro y 9 emisoras espaciales, y sigue sonando en todos los modos; su luz se enciende y se apaga como un equipo de verdad. Las perillas ahora también giran con la rueda del mouse. Skins retroiluminadas con colores nuevos. Look Triglavian en las pantallas y el arranque, y skin Triglavian en ⚙. El modo RATEO ahora se llama <strong>RADAR</strong>. Arreglado un bloqueo de zKillboard que podía dejar sin kills en vivo hasta una hora. <strong>Versión para Linux</strong> (AppImage), que también se actualiza sola. <strong>Sugerencias desde la app</strong> (⚙ → Sugerencias): llegan a SLAMes como EVE mail. Arreglado WH NAV: en púlsar y Wolf-Rayet las resistencias salían en positivo y en realidad bajan.</span><span lang="en"><strong>Open to the whole Sigma Grindset alliance</strong>, and now <strong>in English</strong> (⚙ → Language). <strong>MONITOR for explorers</strong>: plan a route (Ansiblex included) and send it to the game; it warns of possible gate camps at the next gate and listens to your intel. <strong>New radio</strong>: its own button on the frame with a retro tuner and 9 space stations, and it keeps playing in every mode; its light warms up and dims like real hardware. The knobs now also turn with the mouse wheel. Backlit skins with new colors. Triglavian look on the screens and the boot sequence, and a Triglavian skin in ⚙. RATEO mode is now called <strong>RADAR</strong>. Fixed a zKillboard block that could leave you without live kills for up to an hour. <strong>Linux version</strong> (AppImage), which also updates itself. <strong>Feedback from the app</strong> (⚙ → Feedback): it reaches SLAMes as an EVE mail. Fixed WH NAV: on pulsar and Wolf-Rayet systems resistances were shown as a bonus when they actually go down.</span></p></div>
           <div class="row"><span class="label">0.4.7</span><p><span lang="es"><strong>Modo JUMP NAV</strong>: ruta de saltos con jump drive (capitales, jump freighters, black ops) parando solo donde podés dockear, mejor en estructuras, con años luz y combustible de cada salto. Para que vea tus estructuras, cerrá sesión y volvé a entrar una vez en ⚙.</span><span lang="en"><strong>JUMP NAV mode</strong>: jump drive routes (capitals, jump freighters, black ops) stopping only where you can dock, preferring structures, with light years and fuel for each jump. For it to see your structures, log out and back in once in ⚙.</span></p></div>
           <div class="row"><span class="label">0.4.6</span><p><span lang="es">La <strong>ventanita de alertas</strong> tiene siempre el mismo tamaño, así no salta cuando llega una alerta. En reposo es negra y dice si está vigilando.</span><span lang="en">The <strong>alert pill</strong> always keeps the same size, so it doesn't jump when an alert comes in. At rest it's black and shows whether it's watching.</span></p></div>
